@@ -31,7 +31,7 @@ describe('persistent colony storyteller', () => {
       expect(createHash('sha256').update(bytes).digest('hex')).toBe(provenance.sha256);
       const s = VoxelSimulation.load(old), saved = s.save();
       expect(old.version).toBe(19);
-      expect(saved.version).toBe(57);
+      expect(saved.version).toBe(58);
       expectWildlifeIds(old.nextId, saved);
       for (const key of ['tick', 'blocks', 'ladders', 'items', 'research', 'combat'] as const)
         expect(saved[key], key).toEqual(old[key]);

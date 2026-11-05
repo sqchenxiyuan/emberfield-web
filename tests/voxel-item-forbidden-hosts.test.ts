@@ -111,12 +111,17 @@ describe('generic item forbidding at Host boundaries', () => {
     expect(s.counts().grain + s.stats.consumed.grain).toBe(20);
   });
 
-  it('routes warden feeding through ordinary food restrictions and cancels a newly forbidden pending meal', () => {
+  it('routes warden bedside feeding through ordinary food restrictions and cancels a newly forbidden pending meal', () => {
     const { s, p, other: patient } = fixture();
     Object.assign(patient, pos(22), { faction: 'prisoner', phase: 'prisoner', food: 10 });
     const bed = { ...pos(22), id: s.nextId++, axis: 'x' as const, quality: 2 as const,
       medical: false, prisoner: true, owner: patient.id };
     s.beds.push(bed); patient.prisoner = initialPrisoner(s.tick, bed.id);
+    // Healthy inmates now receive floor delivery. This Host boundary exercises
+    // the bedside branch with a conscious prisoner who needs medical rest.
+    patient.medical.bedRest = true;
+    patient.medical.infections.push({ id: s.nextId++, part: 'leftArm', createdTick: s.tick,
+      severity: .1, immunityFactor: 1, tendQuality: null, tendUntil: 0 });
     // Room validity is supplied here; actual feeding selection and reservations
     // are owned by the real core care implementation reached from tryWarden.
     s.prisonCells = () => new Set([at(patient)]);

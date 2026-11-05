@@ -74,6 +74,8 @@ export function validateLiving(d: Record<string, any>): void {
   for (const p of d.pawns) if (record(p)) {
     reserveOtherFood(p.careFoodId, p.careAmount);
     if (p.handleTask?.stage === 'fetch') reserveOtherFood(p.handleTask.foodId, p.handleTask.amount);
+    if (p.animalCareTask?.stage === 'fetch') reserveOtherFood(p.animalCareTask.sourceId, p.animalCareTask.amount);
+    if (p.prisonFoodTask?.stage === 'fetch') reserveOtherFood(p.prisonFoodTask.sourceId, p.prisonFoodTask.amount);
   }
   for (const p of d.pawns) {
     if (!record(p) || !exact(p.living, ['comfort', 'mealTask', 'memories', 'sleepThoughtAt'])) fail('人物居住字段缺失或多余');
@@ -111,11 +113,12 @@ export function validateLiving(d: Record<string, any>): void {
         fail('座位目标没有紧邻餐桌');
       reservedChairs.add(task.chairId);
     }
-    if (p.faction !== 'colony' || p.dead || p.downed || p.drafted || p.carriedBy !== null ||
+    if (!['colony', 'prisoner'].includes(p.faction) || p.dead || p.downed || p.drafted || p.carriedBy !== null ||
         p.carryingPawnId !== null || p.jobId !== null || p.carePhase !== null || p.patientId !== null ||
         p.sleepingSince !== null || p.sleepBedId !== null || p.ropeTask !== null || p.handleTask !== null ||
         p.wardenTask !== null || p.cleanTask !== null || p.firefightTask !== null || p.repairTask !== null ||
         p.weaponTask !== null || p.apparelTask !== null || p.attackTargetId !== null || p.shooting !== null ||
+        p.prisonFoodTask !== undefined || p.animalCareTask !== undefined || p.eggBoxTask !== undefined || p.productionDelivery !== undefined ||
         !record(p.psyche) || p.psyche.recreation !== null || p.psyche.breakUntil > d.tick || !Array.isArray(p.path) ||
         (task.stage === 'chew' && (p.path.length !== 0 || p.destination !== null))) fail('用餐与人物其他活动冲突');
     if (task.sourceId === null) {

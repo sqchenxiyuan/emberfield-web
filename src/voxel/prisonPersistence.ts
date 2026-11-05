@@ -1,6 +1,7 @@
 import { at, type VoxelSave } from './types';
 import { validPrisonerState, validWardenTask } from './prisoners';
 import { healthSummary } from './survival';
+import { FOOD_POLICY_RESOURCES } from './foodPolicies';
 
 const record = (v: unknown): v is Record<string, any> => !!v && typeof v === 'object' && !Array.isArray(v);
 function fail(reason: string): never { throw new Error('俘虏存档无效：' + reason); }
@@ -55,7 +56,9 @@ export function validatePrisoners(d: VoxelSave): void {
       if (p.drafted || p.retreating || p.jobId !== null || p.carePhase !== null || p.patientId !== null ||
           p.carryingPawnId !== null || p.attackTargetId !== null || p.shooting !== null ||
           p.weaponTask !== null || p.apparelTask !== null || p.psyche.recreation !== null ||
-          p.psyche.breakUntil > d.tick || p.eating !== null || !['prisoner', 'downed', 'dead'].includes(p.phase))
+          p.psyche.breakUntil > d.tick || !['prisoner', 'downed', 'dead', 'dine'].includes(p.phase) ||
+          (p.phase === 'dine' ? !record(p.living?.mealTask) || !FOOD_POLICY_RESOURCES.includes(p.eating as any) ||
+            p.dead || p.downed || p.carriedBy !== null || p.prisoner.releasing : p.eating !== null || p.living?.mealTask != null))
         fail('俘虏含自由工作、战斗或不相容活动');
       const bedId = p.prisoner.bedId;
       if (bedId !== null) {
@@ -79,7 +82,8 @@ export function validatePrisoners(d: VoxelSave): void {
         p.weaponTask !== null || p.apparelTask !== null || p.attackTargetId !== null || p.shooting !== null ||
         p.psyche.recreation !== null || p.psyche.breakUntil > d.tick) fail('看守工作条件或阶段无效');
     const q = pawnById.get(task.prisonerId);
-    if (!q || q === p || q.dead || targets.has(q.id) || d.pawns.some(other => other.patientId === q.id))
+    if (!q || q === p || q.dead || targets.has(q.id) ||
+      d.pawns.some(other => other.patientId === q.id || other.prisonFoodTask?.prisonerId === q.id))
       fail('目标不存在或被重复预约');
     targets.add(q.id);
     if (task.stage === 'captureApproach' || task.stage === 'captureCarry') {

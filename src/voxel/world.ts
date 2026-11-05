@@ -5,6 +5,8 @@ import { APPAREL_POLICY_LIMIT, createDefaultApparelPolicies, initialApparelContr
 import { rejectLegacyApparelPolicies, migrateApparelPolicies, validateApparelPolicies } from './apparelPoliciesPersistence';
 import { FOOD_POLICY_LIMIT, createDefaultFoodPolicies, normalizeFoodPolicy, policyAllowsFood } from './foodPolicies';
 import { rejectLegacyFoodPolicies, migrateFoodPolicies, validateFoodPolicies } from './foodPoliciesPersistence';
+import { PRISON_FOOD_RULES, PRISON_ROOM_FOOD_RESOURCES } from './prisonFood';
+import { rejectLegacyPrisonFood, migratePrisonFood, validatePrisonFood } from './prisonFoodPersistence';
 import { rejectLegacyWool, migrateWool, validateWool } from './animalWoolPersistence';
 import { rejectLegacyEggs, migrateEggs, validateEggs } from './animalEggPersistence';
 import { advanceHatcher } from './animalEggs';
@@ -609,6 +611,10 @@ export class VoxelSimulation {
     else if (p.phase === 'rest') targets.push(p);
     if (p.phase === 'travel' && p.destination !== null) targets.push(position(p.destination));
     if (p.living.mealTask) targets.push(p.living.mealTask.target);
+    if (p.prisonFoodTask) {
+      targets.push(p.prisonFoodTask.target, this.pawns.find(q=>q.id===p.prisonFoodTask!.prisonerId));
+      if(p.prisonFoodTask.sourceId!==null)targets.push(this.items.find(i=>i.id===p.prisonFoodTask!.sourceId));
+    }
     if (p.psyche.recreation) targets.push(p.psyche.recreation.target);
     if (p.eggBoxTask) targets.push(this.eggBoxes.find(b=>b.id===p.eggBoxTask!.boxId));
     if (p.animalCareTask) {
@@ -2771,6 +2777,8 @@ export class VoxelSimulation {
       for (const p of this.pawns) {
         if (p.carePhase && !this.validCare(p)) this.release(p);
         if (p.cleanTask && !this.validClean(p)) this.release(p);
+        if (p.prisonFoodTask && !this.validPrisonFood(p)) this.release(p);
+        if (p.faction === 'prisoner' && p.phase === 'dine' && !this.validDining(p)) this.release(p);
       }
     }
     return result;
@@ -3169,6 +3177,12 @@ export class VoxelSimulation {
         ok: true,
         message: bed.medical ? '已设为医疗床，医护会优先救援倒地者' : '已恢复普通床位',
       };
+    }
+    if (c.type === 'prisonFoodDeliver') {
+      const p=this.pawns.find(p=>p.id===c.pawnId), q=this.pawns.find(p=>p.id===c.prisonerId);
+      if(Object.keys(c).some(k=>!['type','pawnId','prisonerId'].includes(k)) || !p || !q || !this.startPrisonFood(p,q))
+        return {ok:false,message:'无法送餐：检查囚犯饥饿、牢房已有食物、供餐政策、通路、落点和人员状态'};
+      return {ok:true,message:p.reason};
     }
     if (c.type === 'care') {
       const p = this.pawns.find((p) => p.id === c.pawnId),
@@ -4101,6 +4115,7 @@ export class VoxelSimulation {
       if (p.careFoodId === item.id || p.careMedicineId === item.id) available -= p.careAmount;
       if (p.handleTask?.stage === 'fetch' && p.handleTask.foodId === item.id) available -= p.handleTask.amount;
       if (p.animalCareTask?.stage === 'fetch' && p.animalCareTask.sourceId === item.id) available -= p.animalCareTask.amount;
+      if (p.prisonFoodTask?.stage === 'fetch' && p.prisonFoodTask.sourceId === item.id) available -= p.prisonFoodTask.amount;
       if (p.living.mealTask?.sourceId === item.id) available -= p.living.mealTask.amount;
       const fetch = this.fetchReservations.get(p.id), haul = this.storageReservations.get(p.id);
       if (fetch?.sourceId === item.id) available -= fetch.amount;
@@ -4410,6 +4425,10 @@ export class VoxelSimulation {
       .sort((a, b) => this.distance[at(a)] - this.distance[at(b)])[0];
   }
   private startCare(p: Pawn, patient: Pawn, action: 'rescue' | 'feed' | 'tend'): boolean {
+    if(action==='feed' && patient.faction==='prisoner') {
+      if(patient.prisoner?.policy==='release' && !patient.downed)return false;
+      if(!patient.downed && !medicalNeedsRest(patient))return this.startPrisonFood(p,patient);
+    }
     if (
       p === patient || !this.pawnAllowed(p,patient) ||
       healthSummary(p).manipulation <= 0 ||
@@ -4424,7 +4443,7 @@ export class VoxelSimulation {
       (action !== 'tend' && !patient.downed && !(action === 'feed' && patient.faction === 'prisoner')) ||
       patient.carriedBy !== null ||
       this.pawns.some((q) => q.id !== p.id && q.patientId === p.id) ||
-      this.pawns.some((q) => q.id !== p.id && (q.patientId === patient.id || q.wardenTask?.prisonerId === patient.id))
+      this.pawns.some((q) => q.id !== p.id && (q.patientId === patient.id || q.wardenTask?.prisonerId === patient.id || q.prisonFoodTask?.prisonerId===patient.id))
     )
       return false;
     const patientBed = this.patientBed(patient);
@@ -4774,14 +4793,14 @@ export class VoxelSimulation {
     // before another tick can perform labor, hauling or care with unusable hands.
     if (
       summary.manipulation <= 0 &&
-      (p.weaponTask || p.jobId !== null || p.carePhase !== null || p.phase === 'haul' || p.wardenTask?.stage.startsWith('capture'))
+      (p.weaponTask || p.jobId !== null || p.carePhase !== null || p.phase === 'haul' || p.prisonFoodTask || p.wardenTask?.stage.startsWith('capture'))
     ) {
       this.release(p);
       p.reason = '操作能力不足，已中止劳动';
     }
     if (death || p.downed !== downed) {
       const bed = this.beds.find((b) => b.id === p.sleepBedId && same(b, p)) ?? this.patientBed(p);
-      for (const q of this.pawns) if (q.patientId === p.id) this.release(q);
+      for (const q of this.pawns) if (q.patientId === p.id || q.prisonFoodTask?.prisonerId===p.id) this.release(q);
       p.dead = !!death;
       p.downed = downed;
       p.deathReason = death;
@@ -6374,6 +6393,7 @@ export class VoxelSimulation {
   private release(p: Pawn) {
     releaseAnimalCare(this, p);
     delete p.manualFoodOrder;
+    delete p.prisonFoodTask;
     delete p.eggBoxTask;
     delete p.productionDelivery;
     if (p.phase === 'rest' && p.sleepingSince !== null && this.tick - p.sleepingSince >= LIVING_RULES.sleepThoughtDelay &&
@@ -6492,6 +6512,7 @@ export class VoxelSimulation {
     return cells;
   }
   prisonTakeFood(p: Pawn, allowed: Set<number>): boolean {
+    if(p.cargo && NUTRITION[p.cargo.resource]) { this.startDining(p,undefined,allowed); return p.phase==='dine'; }
     const foods = this.items.filter(i => canSelectGroundFood(i.resource, p.food) && allowed.has(at(i)) && this.availableStack(i) > 0);
     if (!foods.length) return false;
     this.search(p, allowed);
@@ -6500,14 +6521,100 @@ export class VoxelSimulation {
       order.indexOf(a.resource) - order.indexOf(b.resource) || this.distance[this.reachableItemStand(a)] - this.distance[this.reachableItemStand(b)] || a.id - b.id)[0];
     if (!food) return false;
     if (this.itemTouch(p,food)) {
-      food.amount -= this.consume(p, food, this.availableStack(food));
-      this.items = this.items.filter(i => i.amount > 0);
-      this.reconcileHealth(p);
-      p.path = []; p.destination = null; p.reason = '已吃过牢房内的食物';
+      if(p.cargo && !this.dropCargo(p))return false;
+      if(!this.take(p,food.resource,this.mealAmount(p,food),food.id))return false;
+      this.startDining(p,undefined,allowed);
     } else { this.go(p, this.reachableItemStand(food), 'prisoner'); p.reason = '前往牢房内取食'; }
     return true;
   }
   prisonFeed(p: Pawn, patient: Pawn) { return this.startCare(p, patient, 'feed'); }
+  private prisonRoomHasFood(q: Pawn, cells: Set<number>): boolean {
+    if(q.cargo && NUTRITION[q.cargo.resource])return true;
+    const wanted=this.pawns.filter(p=>p.faction==='prisoner'&&!p.dead&&cells.has(at(p))&&p.food<PRISON_FOOD_RULES.hungryAt&&
+      !(p.cargo&&NUTRITION[p.cargo.resource])).reduce((sum,p)=>sum+(100-p.food)/100,0);
+    const nutrition=this.items.filter(i=>cells.has(at(i))&&PRISON_ROOM_FOOD_RESOURCES.some(r=>r===i.resource))
+      .reduce((sum,i)=>sum+(NUTRITION[i.resource]??0)*this.availableStack(i,q.id),0);
+    return nutrition+PRISON_FOOD_RULES.nutritionMargin>=wanted;
+  }
+  private prisonFoodSpot(p: Pawn, q: Pawn, batch: Cargo): Pos | null {
+    const cells=this.prisonCells(q);
+    if(!cells?.has(at(q)))return null;
+    const choices=[...cells].map(position).filter(c=>this.groundAllowed(c)&&this.canStop(c)&&this.pawnAllowed(p,c)&&
+      !this.fires.some(f=>same(f,c))&&!this.pawns.some(other=>other!==p&&!other.dead&&same(other,c)))
+      .sort((a,b)=>Math.abs(a.x-q.x)+Math.abs(a.y-q.y)+Math.abs(a.z-q.z)-
+        Math.abs(b.x-q.x)-Math.abs(b.y-q.y)-Math.abs(b.z-q.z)||at(a)-at(b));
+    this.search(p);
+    for(const target of choices)if(this.distance[at(target)]>=0&&
+      this.planPlacement([{batch,origin:target,cells:[target]}],this.items,0,new Set(),p.id))return target;
+    return null;
+  }
+  private startPrisonFood(p: Pawn,q: Pawn): boolean {
+    if(p===q || p.faction!=='colony'||p.dead||p.downed||p.drafted||p.carriedBy!==null||p.carryingPawnId!==null||
+      p.psyche.breakUntil>this.tick||healthSummary(p).moving<=.15||healthSummary(p).manipulation<=0||
+      q.faction!=='prisoner'||!q.prisoner||q.dead||q.downed||q.carriedBy!==null||medicalNeedsRest(q)||
+      q.prisoner.releasing||q.prisoner.policy==='release'||q.food>=PRISON_FOOD_RULES.hungryAt||!this.pawnAllowed(p,q)||
+      this.pawns.some(other=>other!==p&&(other.patientId===q.id||other.wardenTask?.prisonerId===q.id||other.prisonFoodTask?.prisonerId===q.id)))return false;
+    const cells=this.prisonCells(q);
+    if(!cells?.has(at(q))||this.prisonRoomHasFood(q,cells))return false;
+    this.search(p);
+    const carried=p.cargo&&NUTRITION[p.cargo.resource]&&this.foodAllowed(q,p.cargo.resource,p)?p.cargo:null;
+    const source=carried?null:FOOD_PREFERENCE.filter(r=>canSelectGroundFood(r,q.food)&&this.foodAllowed(q,r,p))
+      .map(r=>this.pileFor(p,r)).find(Boolean);
+    const batch=carried??source;
+    if(!batch || (source && cells.has(at(source))))return false;
+    const amount=Math.min(this.mealAmount(q,batch),carryLimit(batch.resource),source?this.availableStack(source,p.id):batch.amount);
+    if(amount<=0)return false;
+    const target=this.prisonFoodSpot(p,q,portion(batch,amount));
+    if(!target || (!carried&&!this.dropCargo(p)))return false;
+    this.release(p);
+    p.prisonFoodTask={prisonerId:q.id,sourceId:source?.id??null,resource:batch.resource as NonNullable<Pawn['prisonFoodTask']>['resource'],
+      amount,target,stage:source?'fetch':'deliver'};
+    this.search(p);this.go(p,source?this.reachableItemStand(source):at(target),'prisonFood');
+    p.reason=source?`为${q.name}取送餐食物`:`把食物送进${q.name}的牢房`;
+    return true;
+  }
+  private validPrisonFood(p: Pawn): boolean {
+    const t=p.prisonFoodTask,q=t&&this.pawns.find(q=>q.id===t.prisonerId);
+    if(!t||!q||p.faction!=='colony'||p.dead||p.downed||p.drafted||p.carriedBy!==null||p.carryingPawnId!==null||
+      p.psyche.breakUntil>this.tick||healthSummary(p).moving<=.15||healthSummary(p).manipulation<=0||
+      q.faction!=='prisoner'||!q.prisoner||q.dead||q.downed||q.carriedBy!==null||q.prisoner.releasing||
+      q.prisoner.policy==='release'||medicalNeedsRest(q)||!this.pawnTaskInArea(p)||!this.foodAllowed(q,t.resource,p))return false;
+    const cells=this.prisonCells(q);
+    if(!cells?.has(at(q))||!cells.has(at(t.target))||!this.canStop(t.target)||this.fires.some(f=>same(f,t.target)))return false;
+    return t.stage==='fetch'?this.items.some(i=>i.id===t.sourceId&&i.resource===t.resource&&this.availableStack(i,p.id)>=t.amount)
+      :!!p.cargo&&p.cargo.resource===t.resource&&p.cargo.amount>=t.amount;
+  }
+  private prisonFoodTick(p: Pawn) {
+    if(!this.validPrisonFood(p)) { this.release(p);p.reason='囚犯送餐条件改变，保留物资';return; }
+    if(p.path.length || this.tick<p.moveTick)return;
+    const t=p.prisonFoodTask!,q=this.pawns.find(q=>q.id===t.prisonerId)!;
+    if(t.stage==='fetch') {
+      const source=this.items.find(i=>i.id===t.sourceId)!;
+      if(!this.itemTouch(p,source)) {
+        const route=this.itemPath(p,source);
+        if(route===null){this.release(p);return;}
+        this.go(p,this.reachableItemStand(source),'prisonFood');return;
+      }
+      if(!this.take(p,t.resource,t.amount,source.id)){this.release(p);return;}
+      t.sourceId=null;t.stage='deliver';
+      const path=this.path(p,t.target);
+      if(path===null){this.release(p);p.reason='送餐通路中断，食物留在手中';return;}
+      p.path=path;p.destination=at(t.target);p.reason=`携带${RESOURCE_NAMES[t.resource]}送往牢房`;return;
+    }
+    if(!same(p,t.target)) {
+      const path=this.path(p,t.target);
+      if(path===null){this.release(p);return;}p.path=path;p.destination=at(t.target);return;
+    }
+    const batch=portion(p.cargo!,t.amount),plan=this.planPlacement([{batch,origin:t.target,cells:[t.target]}],this.items,0,new Set(),p.id);
+    if(!plan) {
+      const target=this.prisonFoodSpot(p,q,batch);
+      if(target){t.target=target;this.search(p);this.go(p,at(target),'prisonFood');}
+      else {p.moveTick=this.tick+40;p.reason='牢房没有放餐空间，保留食物等待';}
+      return;
+    }
+    this.commitPlacement(plan);p.cargo!.amount-=t.amount;if(p.cargo!.amount===0)p.cargo=null;
+    this.release(p);p.reason=`已把食物放进${q.name}的牢房，等待自行取食`;
+  }
   prisonBeginCapture(p: Pawn, _bed: Bed): boolean {
     if (!this.dropCargo(p)) return false;
     this.release(p);
@@ -6594,6 +6701,7 @@ export class VoxelSimulation {
       (p.careMedicineId !== null && changed.has(p.careMedicineId)) ||
       (p.handleTask?.stage === 'fetch' && p.handleTask.foodId !== null && changed.has(p.handleTask.foodId)) ||
       (p.animalCareTask?.stage === 'fetch' && p.animalCareTask.sourceId !== null && changed.has(p.animalCareTask.sourceId)) ||
+      (p.prisonFoodTask?.stage === 'fetch' && p.prisonFoodTask.sourceId !== null && changed.has(p.prisonFoodTask.sourceId)) ||
       (p.weaponTask?.stage === 'fetch' && stacks.some(i => i.weapon?.id === p.weaponTask!.weaponId)) ||
       (p.apparelTask?.stage === 'fetch' && stacks.some(i => i.apparel?.id === p.apparelTask!.apparelId))
     ) { this.release(p); p.reason = reason; }
@@ -6674,7 +6782,7 @@ export class VoxelSimulation {
         phase: 'idle', cargo: null, reason: '商队前往营地', moveTick: this.tick, workTarget: null,
         eating: null, sleepBedId: null, sleepingSince: null, schedule: defaultSchedule() };
       // A copied colonist is only the body template, never a live work order.
-      delete p.eggBoxTask; delete p.productionDelivery; delete p.animalCareTask; delete p.manualFoodOrder; p.allowedAreaId=null;
+      delete p.eggBoxTask; delete p.productionDelivery; delete p.animalCareTask; delete p.manualFoodOrder; delete p.prisonFoodTask; p.allowedAreaId=null;
       this.pawns.push(p); pawnIds.push(id);
     }
     const traderId = pawnIds[0];
@@ -7271,6 +7379,7 @@ export class VoxelSimulation {
   }
   private reconcileFoodPolicies() {
     for (const p of this.pawns) {
+      if(p.prisonFoodTask && !this.validPrisonFood(p)) { this.release(p); p.reason='囚犯供餐条件改变，保留携带食物'; }
       if (p.eating && !this.foodAllowed(p,p.eating)) {
         this.release(p); p.reason = '饮食政策改变，保留餐食并重新安排';
       } else if (p.carePhase?.startsWith('feed') && !this.validCare(p)) {
@@ -7352,18 +7461,18 @@ export class VoxelSimulation {
   }
   /** Only the picked physical batch is carried. The rare full-hands fallback
    * reserves food at the pawn's feet and leaves the other cargo intact. */
-  private startDining(p: Pawn, ground?: Stack) {
+  private startDining(p: Pawn, ground?: Stack, allowed?: Set<number>) {
     if (ground && p.cargo && NUTRITION[p.cargo.resource]) {
       this.release(p); p.reason = '双手已有食物且无卸货空间，保留物资等待'; return;
     }
     const batch = ground ?? p.cargo;
     if (!batch || !NUTRITION[batch.resource] || !this.foodAllowed(p,batch.resource)) { this.release(p); return; }
     let chair: DiningChair | undefined, table: DiningTable | undefined;
-    this.search(p);
+    this.search(p,allowed);
     if (!ground) {
       const choices = this.chairs.flatMap(c => {
         const t = this.adjacentDiningTable(c), distance = this.distance[at(c)];
-        if (!t || !this.pawnAllowed(p,c) || !this.pawnAllowed(p,t) || distance < 0 || distance > LIVING_RULES.maxSeatDistance || !this.canStop(c) || this.leisureReserved(p,c) ||
+        if (!t || (allowed && !allowed.has(at(c))) || !this.pawnAllowed(p,c) || !this.pawnAllowed(p,t) || distance < 0 || distance > LIVING_RULES.maxSeatDistance || !this.canStop(c) || this.leisureReserved(p,c) ||
             this.fires.some(f => same(f, c)) || this.pawns.some(q => q !== p &&
               (same(q, c) || q.living.mealTask?.chairId === c.id))) return [];
         return [{ chair:c, table:t, distance }];
@@ -7387,6 +7496,11 @@ export class VoxelSimulation {
   }
   private validDining(p: Pawn) {
     const task = p.living.mealTask;
+    if(p.faction==='prisoner') {
+      const cells=this.prisonCells(p);
+      if(p.prisoner?.releasing || !cells?.has(at(p)) || !task || !cells.has(at(task.target)) ||
+        p.path.some(cell => !cells.has(cell)))return false;
+    }
     if (!task || !this.pawnAllowed(p,task.target) || p.dead || p.downed || p.drafted || p.carriedBy !== null || !this.canStop(task.target) ||
         this.fires.some(f => same(f,task.target))) return false;
     const batch = task.sourceId === null ? p.cargo : this.items.find(i => i.id === task.sourceId && this.itemTouch(p,i));
@@ -8437,8 +8551,17 @@ export class VoxelSimulation {
         const job = this.jobs.find(j => j.id === p.jobId);
         if (job && this.fires.some(f => touchesFire(f, job))) { this.release(p); p.reason = '工作位置起火，先处理火灾'; }
         if (p.psyche.breakUntil > this.tick) { this.mentalTick(p); continue; }
-        if (p.faction === 'prisoner') { prisonerTick(this, p); this.moveAlongPath(p); continue; }
+        if (p.faction === 'prisoner') {
+          if(p.phase==='dine') {
+            p.rest=Math.max(0,p.rest-restLoss(p.rest));
+            if(!this.validDining(p) || this.pawns.some(q=>q.patientId===p.id || q.wardenTask?.prisonerId===p.id))this.release(p);
+            else if(p.path.length)this.moveAlongPath(p);
+            else this.diningTick(p);
+          } else { prisonerTick(this,p);this.moveAlongPath(p); }
+          continue;
+        }
         this.reconcilePawnArea(p);
+        if(p.prisonFoodTask && !this.validPrisonFood(p)) { this.release(p);p.reason='供餐条件改变，保留携带食物'; }
         if (p.apparelTask?.automatic && !this.validAutomaticApparel(p)) {
           this.release(p); p.reason = '自动换装条件改变，保留衣物并重新安排';
         }
@@ -8463,7 +8586,7 @@ export class VoxelSimulation {
           p.reason = '护理条件改变，重新安排';
         }
         if (
-          p.phase !== 'care' && p.phase !== 'animalCare' &&
+          p.phase !== 'care' && p.phase !== 'animalCare' && p.phase !== 'prisonFood' &&
           !combatant &&
           !p.drafted &&
           p.phase !== 'travel' &&
@@ -8573,6 +8696,7 @@ export class VoxelSimulation {
         if (p.eggBoxTask && !this.validEggBoxTask(p)) { this.release(p); p.reason='收蛋条件改变，鸡蛋留在箱内'; }
         if (p.phase === 'dine' && !this.validDining(p)) { this.release(p); p.reason = '用餐位置或食物改变，保留携带物重新安排'; continue; }
         if (p.path.length) { this.moveAlongPath(p); continue; }
+        if (p.phase === 'prisonFood') { this.prisonFoodTick(p); continue; }
         if (p.phase === 'eggBox') { this.eggBoxTick(p); continue; }
         if (p.phase === 'dine') { this.diningTick(p); continue; }
         if (p.phase === 'firefight') { firefightTick(this, p); continue; }
@@ -9175,7 +9299,7 @@ export class VoxelSimulation {
     this.updateRooms();
     return structuredClone({
       format: 'emberfield-voxel',
-      version: 57,
+      version: 58,
       apparelPolicies: this.apparelPolicies,
       foodPolicies: this.foodPolicies,
       autoSlaughter: this.autoSlaughter,
@@ -9241,11 +9365,12 @@ export class VoxelSimulation {
     const old = structuredClone(raw) as Record<string, any>;
     if (
       old.format !== 'emberfield-voxel' ||
-      ![1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31, 32, 33, 34, 35, 36, 37, 38, 39, 40, 41, 42, 43, 44, 45, 46, 47, 48, 49, 50, 51, 52, 53, 54, 55, 56, 57].includes(old.version) ||
+      ![1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31, 32, 33, 34, 35, 36, 37, 38, 39, 40, 41, 42, 43, 44, 45, 46, 47, 48, 49, 50, 51, 52, 53, 54, 55, 56, 57, 58].includes(old.version) ||
       (old.version < 8 ? old.generator !== 1 : !(old.version < 36 ? [1, 2] : old.version < 43 ? [1, 2, 3] : [1, 2, 3, 4]).includes(old.generator))
     )
       throw new Error('请使用体素版存档；二维存档仍在原营地入口读取');
     const sourceVersion = old.version;
+    rejectLegacyPrisonFood(old,sourceVersion);
     rejectLegacyFoodPolicies(old,sourceVersion);
     rejectLegacyApparelPolicies(old,sourceVersion);
     rejectLegacyAnimalEnvironment(old,sourceVersion);
@@ -9689,7 +9814,8 @@ export class VoxelSimulation {
     migrateAnimalEnvironment(old,sourceVersion);
     migrateApparelPolicies(old,sourceVersion);
     migrateFoodPolicies(old,sourceVersion);
-    old.version = 57;
+    migratePrisonFood(old,sourceVersion);
+    old.version = 58;
     if(!Array.isArray(old.storageGroups))throw new Error('储存组列表无效');
     const worldSite = validateWorldSiteIdentity(old);
     const d = old as VoxelSave;
@@ -10521,7 +10647,7 @@ export class VoxelSimulation {
           'apparel',
           'combat',
           'hunt',
-          'handle', 'rope', 'eggBox', 'animalCare',
+          'handle', 'rope', 'eggBox', 'animalCare', 'prisonFood',
           'firefight',
           'repair',
           'clean',
@@ -10806,6 +10932,7 @@ export class VoxelSimulation {
     validateAnimalEnvironment(d);
     validateApparelPolicies(d);
     validateFoodPolicies(d);
+    validatePrisonFood(d);
     validateAnimalTrade(d);
     validateAnimalMedical(d);
     validateMilk(d);
@@ -11072,7 +11199,16 @@ export class VoxelSimulation {
         else if (!s.itemTouch(p,box)) s.go(p,stand,'eggBox');
         continue;
       }
-      if (p.wardenTask || p.handleTask || p.ropeTask || p.faction === 'prisoner') continue;
+      if(p.prisonFoodTask) {
+        if(!s.validPrisonFood(p))s.release(p);
+        else {
+          const t=p.prisonFoodTask,route=t.stage==='fetch'?s.itemPath(p,s.items.find(i=>i.id===t.sourceId)!):s.path(p,t.target);
+          if(route===null)s.release(p);
+          else {p.path=route;p.destination=route.at(-1)??at(p);p.moveTick=s.tick;}
+        }
+        continue;
+      }
+      if (p.wardenTask || p.handleTask || p.ropeTask || (p.faction === 'prisoner' && p.phase!=='dine')) continue;
       if (p.firefightTask || p.repairTask) {
         const targets = p.firefightTask ? [s.fires.find(f => f.id === p.firefightTask!.fireId)!] :
           fireDamageCells(s.fireDamage.find(d => d.key === p.repairTask!.damageKey)!, s);
@@ -11237,7 +11373,8 @@ export class VoxelSimulation {
         const task = p.living.mealTask!;
         if (!s.validDining(p)) { s.release(p); p.reason = '回读后餐桌或食物条件改变'; }
         else if (task.stage === 'travel') {
-          const route = s.path(p, task.target);
+          const route = p.faction === 'prisoner'
+            ? s.prisonPath(p, task.target, s.prisonCells(p)!) : s.path(p, task.target);
           if (route === null) { s.release(p); p.reason = '回读后座位不可达，保留餐食'; }
           else { p.path = route; p.destination = at(task.target); p.moveTick = s.tick; }
         }

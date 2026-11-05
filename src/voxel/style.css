@@ -1708,6 +1708,32 @@ a {
 .voxel-food-policy-panel .voxel-food-order-status {
   color: #ead194;
 }
+.voxel-prison-food {
+  display: grid;
+  gap: 8px;
+  margin: 12px 0;
+  padding: 10px;
+  min-width: 0;
+  border: 1px solid #b6ab8655;
+  border-radius: 4px;
+  background: #363b2d55;
+  font-size: 12px;
+  overflow-wrap: anywhere;
+}
+.voxel-prison-food > b { color: #ded4b1; }
+.voxel-prison-food label { display: grid; gap: 5px; min-width: 0; }
+.voxel-prison-food select { width: 100%; min-width: 0; box-sizing: border-box; }
+.voxel-prison-food small { display: block; color: #c4cdc2; line-height: 1.6; }
+.voxel-prison-food-progress {
+  display: grid;
+  gap: 6px;
+  padding: 8px;
+  border: 1px solid #bdb68344;
+  border-radius: 3px;
+  background: #4d4f3344;
+}
+.voxel-prison-food-progress b { color: #e4d49a; font-size: 11px; }
+.voxel-prison-food-progress button { padding: 6px 8px; font-size: 11px; }
 .voxel-apparel-piece-actions {
   display: grid;
   flex-shrink: 0;

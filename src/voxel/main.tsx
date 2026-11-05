@@ -33,7 +33,7 @@ import { tableCells, LIVING_BUILDINGS } from './living';
 import { BatchDurability, ItemCondition } from './ItemCondition';
 import type { EnvironmentView } from './environment';
 import { WEATHER_NAMES } from './weather';
-import { needsMedicalTending } from './medicine';
+import { medicalNeedsRest, needsMedicalTending } from './medicine';
 import { healthSummary } from './survival';
 import { SkillPanel, WorkSkill } from './SkillPanel';
 import { ResearchPanel, ResearchBenchPanel } from './ResearchPanel';
@@ -41,6 +41,7 @@ import { RESEARCH_DEFS, toolResearchReason } from './research';
 import { ApparelPanel, WearApparel } from './ApparelPanel';
 import { FoodPolicyPanel } from './FoodPolicyPanel';
 import { FoodOrder } from './FoodOrder';
+import { PrisonFoodAction, PrisonFoodPanel } from './PrisonFoodPanel';
 import { ProductionBillsPanel } from './ProductionBillsPanel';
 import { ProductionDeliveryStatus } from './ProductionOutputPanel';
 import { UnfinishedPanel } from './UnfinishedPanel';
@@ -1544,8 +1545,10 @@ function App() {
               <small data-testid="prisoner-last-interaction">上次结果：{pawn.prisoner.lastInteraction || '尚未交谈'}</small>
               <small>位置 {pawn.x}, {pawn.y} · Z {pawn.z} · 俘虏于第 {Math.floor(pawn.prisoner.capturedTick / DAY) + 1} 日</small>
               {prisonerBed ? <button onClick={() => focus(prisonerBed)}>定位分配的囚犯床</button> : <small>未分配有效囚犯床，请检查房间与床位。</small>}
-              <small>囚犯保留伤情和需求，可以被护理与喂食；招募后才能像殖民者一样征召、分工和安排作息。</small>
+              <small>囚犯保留伤情和需求，可以被护理；健康时自行取餐，倒地或卧床休养时由同伴喂食。招募后才能像殖民者一样征召、分工和安排作息。</small>
+              {s && <PrisonFoodPanel key={`prison-food-${pawn.id}`} pawn={pawn} snapshot={s} command={c => void client.command(c)} focus={focus} />}
             </section>}
+            {s && pawn.faction === 'colony' && <PrisonFoodPanel pawn={pawn} snapshot={s} command={c => void client.command(c)} focus={focus} />}
             {s && <PawnAllowedArea pawn={pawn} snapshot={s} command={client.command} controls={penControls} manage={manageAllowedAreas} />}
             {pawn.faction === 'colony' && <MoodPanel pawn={pawn} tick={s?.tick ?? 0} temperature={temperatureOf(pawn)}
               environment={s!.environment}
@@ -1589,7 +1592,7 @@ function App() {
             <WeaponPanel pawn={pawn} command={(c) => void client.command(c)} />
             {(pawn.faction === 'colony' || pawn.faction === 'prisoner') &&
               !pawn.dead &&
-              (pawn.downed || needsMedicalTending(pawn, s?.tick ?? 0) || (pawn.faction === 'prisoner' && pawn.food < 26)) && (
+              (pawn.downed || needsMedicalTending(pawn, s?.tick ?? 0) || (pawn.faction === 'prisoner' && (pawn.food <= 26 || medicalNeedsRest(pawn)))) && (
                 <div className="voxel-care-actions" data-testid="care-controls">
                   <label>
                     安排同伴
@@ -1622,13 +1625,13 @@ function App() {
                     >
                       优先救援
                     </button>
-                    <button
+                    {pawn.faction === 'prisoner' && s ? <PrisonFoodAction prisoner={pawn} worker={carer} snapshot={s} command={c => void client.command(c)} /> : <button
                       disabled={
                         !carer ||
-                        (pawn.faction === 'colony' && !pawn.downed) ||
-                        (pawn.faction === 'prisoner' ? pawn.food >= 26 : pawn.food > 26) ||
+                        !pawn.downed ||
+                        pawn.food > 26 ||
                         pawn.carriedBy !== null ||
-                        (pawn.faction === 'prisoner' ? !prisonerBed || !equal(pawn, prisonerBed) : pawn.sleepBedId === null)
+                        pawn.sleepBedId === null
                       }
                       onClick={() =>
                         carer &&
@@ -1641,7 +1644,7 @@ function App() {
                       }
                     >
                       优先喂食
-                    </button>
+                    </button>}
                     <button
                       disabled={
                         !carer ||

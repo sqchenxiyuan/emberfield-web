@@ -240,7 +240,7 @@ describe('shared food policy decisions with physical items and simulation ticks'
     const meal = food(s, 'meal', 2, pos(13)), ration = food(s, 'food', 2, pos(18));
     expect(s.command({ type: 'care', pawnId: warden.id, patientId: prisoner.id, action: 'feed' }).ok).toBe(false);
     policy(s, ['food']); cmd(s, { type: 'care', pawnId: warden.id, patientId: prisoner.id, action: 'feed' });
-    expect(warden.careFoodId).toBe(ration.id); until(s, () => prisoner.food > 90);
+    expect(warden.prisonFoodTask?.sourceId).toBe(ration.id); until(s, () => prisoner.food > 90);
     expect(s.stats.consumed.food).toBe(1); expect(s.stats.consumed.meal).toBe(0);
     expect(s.items.find(i => i.id === meal.id)?.amount).toBe(2); expect(prisoner.faction).toBe('prisoner');
     expect(() => VoxelSimulation.load(s.save())).not.toThrow();

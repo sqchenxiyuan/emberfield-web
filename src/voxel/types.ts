@@ -3,6 +3,7 @@ import type { AnimalMedicalState, AnimalCareTask, AnimalBed } from './animalMedi
 import type { AnimalEnvironmentState } from './animalEnvironment';
 import type { ApparelControl, ApparelPoliciesState, ApparelPolicy } from './apparelPolicies';
 import type { FoodPoliciesState, FoodPolicy, FoodResource } from './foodPolicies';
+import type { PrisonFoodTask } from './prisonFood';
 import type { Trauma } from './injuries';
 import type { MedicalState, MedicalPolicy } from './medicine';
 import type { WeaponPiece, WeaponKind, WeaponBenchKind } from './weapons';
@@ -699,6 +700,7 @@ export interface CombatState {
   wave: number;
 }
 export interface Pawn extends Pos {
+  prisonFoodTask?: PrisonFoodTask;
   animalCareTask?: AnimalCareTask;
   eggBoxTask?: EggBoxTask;
   allowedAreaId: number | null;
@@ -760,6 +762,7 @@ export interface Pawn extends Pos {
   path: number[];
   destination: number | null;
   phase:
+    | 'prisonFood'
     | 'animalCare'
     | 'eggBox'
     | 'dine'
@@ -1046,6 +1049,7 @@ export type VoxelCommand =
   | { type: 'foodPolicyDelete'; policyId: number }
   | { type: 'pawnFoodPolicy'; pawnId: number; policyId: number | null }
   | { type: 'ingest'; pawnId: number; stackId: number }
+  | { type: 'prisonFoodDeliver'; pawnId: number; prisonerId: number }
   | { type: 'bedOwner'; bedId: number; pawnId: number | null }
   | { type: 'bedMedical'; bedId: number; medical: boolean }
   | { type: 'care'; pawnId: number; patientId: number; action: 'rescue' | 'feed' | 'tend' }
@@ -1092,7 +1096,7 @@ export interface VoxelSave {
   eggBoxes: EggBox[];
   horseshoePins: HorseshoePin[];
   format: 'emberfield-voxel';
-  version: 57;
+  version: 58;
   autoSlaughter: import('./autoSlaughter').AutoSlaughterSettings;
   animals: WildAnimal[];
   butcherSpots: ButcherSpot[];

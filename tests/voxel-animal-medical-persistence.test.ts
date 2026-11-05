@@ -87,7 +87,7 @@ describe('v54 animal medical schema and migration', () => {
     const {s,a}=hospital();s.animalBeds=[];a.health=8;
     const old:any=s.save();stripAnimalMedicalFields(old);old.version=53;const before=structuredClone(old);
     const loaded=VoxelSimulation.load(old), migrated=loaded.save();
-    expect(migrated.version).toBe(57);expect(migrated.animals[0]).toEqual({...old.animals[0],medical:initialAnimalMedical(),environment:initialAnimalEnvironment()});
+    expect(migrated.version).toBe(58);expect(migrated.animals[0]).toEqual({...old.animals[0],medical:initialAnimalMedical(),environment:initialAnimalEnvironment()});
     expect(migrated.animalBeds).toEqual([]);expect(old).toEqual(before);
     loaded.step();expect(loaded.animals[0].health).toBe(8);
   });

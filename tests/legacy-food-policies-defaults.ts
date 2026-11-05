@@ -1,9 +1,11 @@
 import { expect } from 'vitest';
 import { createDefaultFoodPolicies } from '../src/voxel/foodPolicies';
+import { assertPrisonFoodDefaults, stripPrisonFoodFields } from './legacy-prison-food-defaults';
 
 /** Synthetic downgrades may only discard untouched unrestricted policies.
  * Preflight precedes every deletion in the predecessor helper chain. */
 export function assertFoodPoliciesDefaults(raw: Record<string, any>): void {
+  assertPrisonFoodDefaults(raw);
   if (Object.hasOwn(raw, 'foodPolicies')) expect(raw.foodPolicies).toEqual(createDefaultFoodPolicies());
   for (const p of raw.pawns ?? []) {
     if (Object.hasOwn(p, 'manualFoodOrder')) throw new Error('Cannot downgrade manual food order');
@@ -13,6 +15,7 @@ export function assertFoodPoliciesDefaults(raw: Record<string, any>): void {
 }
 export function stripFoodPoliciesFields(raw: Record<string, any>): void {
   assertFoodPoliciesDefaults(raw);
+  stripPrisonFoodFields(raw);
   delete raw.foodPolicies;
   for (const p of raw.pawns ?? []) delete p.foodPolicyId;
 }

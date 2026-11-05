@@ -156,7 +156,7 @@ describe('physical milking and persistence',()=>{
   it('migrates authentic schema shape defaults and rejects smuggled fields before old migrations',()=>{
     // Boreal generation contains only species representable by this synthetic v48 input.
     const s=new VoxelSimulation(73129,{biome:'boreal'}),raw=s.save() as any;stripAnimalMilkFields(raw);raw.version=48;
-    const migrated=VoxelSimulation.load(raw).save();expect(migrated.version).toBe(57);
+    const migrated=VoxelSimulation.load(raw).save();expect(migrated.version).toBe(58);
     expect(migrated.animals.every(a=>a.milkFullness===0)).toBe(true);expect(migrated.stats.produced.milk).toBe(0);
     expect(migrated.stockpiles.map(p=>p.accepts)).toEqual(raw.stockpiles.map((p:any)=>p.accepts));
     for(const mutate of [(d:any)=>d.animals[0].milkFullness=0,(d:any)=>d.stats.produced.milk=0,

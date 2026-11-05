@@ -1,0 +1,2101 @@
+{
+  "evidence_id": "RW17-PRISON-FOOD-STATIC",
+  "version": "1.7.4980 rev60",
+  "assemblySha256": "eff7d97949f919fb2b151ebfb906e9be749b63410b7dbda78eeebb7972b245c3",
+  "reaEvidenceId": "ev_41acdc3a1d6904fb12e36eeaac20397afac130d300dafc70973a154cd3fbfd84",
+  "reaParentId": "ev_ebbdfc84b2bb4bc3fff131fd667e539f7c75c3d78c0491481455a7751b3a5337",
+  "reaFile": "docs/research/rimworld/evidence/production-bills-rea-managed.json",
+  "reaSha256": "3384ec6e56503683c16f4d5343ce99db0a3dd77761d05c60dad091612c3910f8",
+  "manifestFile": "docs/research/rimworld/evidence/prison-food-manifest.json",
+  "manifestSha256": "1225f6b60fdc9eb637424e4e94486e80dea146bfddfc271b5994c4bb8b1a8336",
+  "reusedFoodPolicies": {
+    "manifestFile": "docs/research/rimworld/evidence/food-policies-manifest.json",
+    "manifestSha256": "7468835a9644731d6eb8a8f694b4031fcc8e8c7267d9b108c9e935a6a50174f6",
+    "mechanismsFile": "docs/research/rimworld/evidence/food-policies-mechanisms.json",
+    "mechanismsSha256": "f0490bda7578ef828ea477060ef5e1ed7f7d1bf58ee96fa738b376fea78844d7",
+    "matchingTypes": [
+      {
+        "type": "RimWorld.WorkGiver_Warden_DeliverFood",
+        "priorFile": ".local-research/food-policies/RimWorld.WorkGiver_Warden_DeliverFood.cs",
+        "sha256": "b07bd8669c7621fb21948f5cd30b348a2ea366ab3d681b3c206490a2a6acaf11"
+      },
+      {
+        "type": "RimWorld.WorkGiver_Warden_Feed",
+        "priorFile": ".local-research/food-policies/RimWorld.WorkGiver_Warden_Feed.cs",
+        "sha256": "ad58fb14a667dfc415a6f0ce8228c5707c0d42244d15e9c07f191717d5a07f24"
+      },
+      {
+        "type": "RimWorld.JobDriver_FoodDeliver",
+        "priorFile": ".local-research/food-policies/RimWorld.JobDriver_FoodDeliver.cs",
+        "sha256": "ff0f05789617811d450d79b37956a4a4b9576885ff9d02e0e529839335b2930c"
+      },
+      {
+        "type": "RimWorld.JobDriver_FoodFeedPatient",
+        "priorFile": ".local-research/food-policies/RimWorld.JobDriver_FoodFeedPatient.cs",
+        "sha256": "abb8b8a547af43ca8b7c6a55b33b04ed1f09293c1fff3cb8f203847e4951015e"
+      },
+      {
+        "type": "RimWorld.FeedPatientUtility",
+        "priorFile": ".local-research/food-policies/RimWorld.FeedPatientUtility.cs",
+        "sha256": "6d67a449a99aa8afa890a7273f810f1c160719c159ecef07982a9be706b3500f"
+      },
+      {
+        "type": "RimWorld.WardenFeedUtility",
+        "priorFile": ".local-research/food-policies/RimWorld.WardenFeedUtility.cs",
+        "sha256": "767e92e40bbe9d2b25b42aa7f64155dd106f049b6bf9da1a5ac3c62294f64282"
+      },
+      {
+        "type": "RimWorld.WorkGiver_FeedPatient",
+        "priorFile": ".local-research/food-policies/RimWorld.WorkGiver_FeedPatient.cs",
+        "sha256": "6f13f28fcc39b939b62beb73bbe3cecb7cfc3af261657c3f900e3cee8e97f26e"
+      },
+      {
+        "type": "RimWorld.Pawn_GuestTracker",
+        "priorFile": ".local-research/food-policies/RimWorld.Pawn_GuestTracker.cs",
+        "sha256": "0d37d2c0a1210dad405e31097fae6d41cd5838675927d6e36752c044a395414f"
+      },
+      {
+        "type": "RimWorld.JobGiver_GetFood",
+        "priorFile": ".local-research/food-policies/RimWorld.JobGiver_GetFood.cs",
+        "sha256": "c648efbdd091620603979d79de4c064f5a8174e7f6cf51950b6c19619a398a04"
+      },
+      {
+        "type": "RimWorld.FoodUtility",
+        "priorFile": ".local-research/food-policies/RimWorld.FoodUtility.cs",
+        "sha256": "b8c118d3c34a0beae6940c17db6b2f8a6b17f4e453354105b9a14820b5895de8"
+      },
+      {
+        "type": "RimWorld.JobDriver_Ingest",
+        "priorFile": ".local-research/food-policies/RimWorld.JobDriver_Ingest.cs",
+        "sha256": "278d66fed21ad28e41fb21c8af49f224a73c4163a26067431fe6eee0768ec3c6"
+      },
+      {
+        "type": "RimWorld.Toils_Ingest",
+        "priorFile": ".local-research/food-policies/RimWorld.Toils_Ingest.cs",
+        "sha256": "2e10eef89dc2f5d216681188952eb0227d1dd04d459463256a162310c30d9bb7"
+      },
+      {
+        "type": "RimWorld.Pawn_FoodRestrictionTracker",
+        "priorFile": ".local-research/food-policies/RimWorld.Pawn_FoodRestrictionTracker.cs",
+        "sha256": "b8a46df9f57faf23ee274eaf358855c995a9c05ee41e246515e02835d088799b"
+      },
+      {
+        "type": "RimWorld.Need_Food",
+        "priorFile": ".local-research/food-policies/RimWorld.Need_Food.cs",
+        "sha256": "f17cbaf82d8792108557f869db585fdd6ac26c0ebb537e8acf04173179e7c4cd"
+      },
+      {
+        "type": "RimWorld.ForbidUtility",
+        "priorFile": ".local-research/food-policies/RimWorld.ForbidUtility.cs",
+        "sha256": "e36190372ca2bc9540ef40d3d6a3ee836f30c3da7ee6842dffa79c0da78fbf48"
+      },
+      {
+        "type": "Verse.AI.ToilFailConditions",
+        "priorFile": ".local-research/food-policies/Verse.AI.ToilFailConditions.cs",
+        "sha256": "b65d94d89afe233a364b1179adc8afd1fa3e31320339db79fd608c05a24c875e"
+      },
+      {
+        "type": "Verse.AI.Pawn_JobTracker",
+        "priorFile": ".local-research/food-policies/Verse.AI.Pawn_JobTracker.cs",
+        "sha256": "7934319bfedbd8a46aa54341a2afec9561efb469cd4fe58aec5745f9236fc5c4"
+      }
+    ]
+  },
+  "rules": [
+    {
+      "type": "RimWorld.WorkGiver_Warden",
+      "needle": "pawn.Map.mapPawns.SlavesAndPrisonersOfColonySpawned",
+      "locations": [
+        {
+          "line": 16,
+          "text": "return pawn.Map.mapPawns.SlavesAndPrisonersOfColonySpawned;"
+        },
+        {
+          "line": 21,
+          "text": "return pawn.Map.mapPawns.SlavesAndPrisonersOfColonySpawnedCount == 0;"
+        }
+      ],
+      "interpretation": "The general warden scanner visits actual spawned prisoners/slaves."
+    },
+    {
+      "type": "RimWorld.WorkGiver_Warden",
+      "needle": "!pawn.guest.PrisonerIsSecure",
+      "locations": [
+        {
+          "line": 26,
+          "text": "if (!(prisoner is Pawn { IsPrisonerOfColony: not false } pawn) || !pawn.guest.PrisonerIsSecure || !pawn.Spawned || pawn.InAggroMentalState || prisoner.IsForbidden(warden) || pawn.IsFormingCaravan() || !warden.CanReserveAndReach(pawn, PathEndMode.OnCell, warden.NormalMaxDanger(), 1, -1, null, forced))"
+        }
+      ],
+      "interpretation": "A prisoner must be secure for ordinary care."
+    },
+    {
+      "type": "RimWorld.WorkGiver_Warden",
+      "needle": "!pawn.Spawned || pawn.InAggroMentalState",
+      "locations": [
+        {
+          "line": 26,
+          "text": "if (!(prisoner is Pawn { IsPrisonerOfColony: not false } pawn) || !pawn.guest.PrisonerIsSecure || !pawn.Spawned || pawn.InAggroMentalState || prisoner.IsForbidden(warden) || pawn.IsFormingCaravan() || !warden.CanReserveAndReach(pawn, PathEndMode.OnCell, warden.NormalMaxDanger(), 1, -1, null, forced))"
+        },
+        {
+          "line": 35,
+          "text": "if (!(slave is Pawn { IsSlaveOfColony: not false } pawn) || !pawn.guest.SlaveIsSecure || !pawn.Spawned || pawn.InAggroMentalState || pawn.IsForbidden(warden) || pawn.IsFormingCaravan() || !warden.CanReserveAndReach(pawn, PathEndMode.Touch, warden.NormalMaxDanger(), 1, -1, null, forced))"
+        }
+      ],
+      "interpretation": "Unspawned or aggressively mentally broken prisoners are not ordinary supply targets."
+    },
+    {
+      "type": "RimWorld.WorkGiver_Warden",
+      "needle": "prisoner.IsForbidden(warden)",
+      "locations": [
+        {
+          "line": 26,
+          "text": "if (!(prisoner is Pawn { IsPrisonerOfColony: not false } pawn) || !pawn.guest.PrisonerIsSecure || !pawn.Spawned || pawn.InAggroMentalState || prisoner.IsForbidden(warden) || pawn.IsFormingCaravan() || !warden.CanReserveAndReach(pawn, PathEndMode.OnCell, warden.NormalMaxDanger(), 1, -1, null, forced))"
+        }
+      ],
+      "interpretation": "The warden must be allowed to interact with the prisoner."
+    },
+    {
+      "type": "RimWorld.WorkGiver_Warden",
+      "needle": "!warden.CanReserveAndReach(pawn, PathEndMode.OnCell, warden.NormalMaxDanger(), 1",
+      "locations": [
+        {
+          "line": 26,
+          "text": "if (!(prisoner is Pawn { IsPrisonerOfColony: not false } pawn) || !pawn.guest.PrisonerIsSecure || !pawn.Spawned || pawn.InAggroMentalState || prisoner.IsForbidden(warden) || pawn.IsFormingCaravan() || !warden.CanReserveAndReach(pawn, PathEndMode.OnCell, warden.NormalMaxDanger(), 1, -1, null, forced))"
+        }
+      ],
+      "interpretation": "Selection needs an actual reachable and exclusively reservable prisoner."
+    },
+    {
+      "type": "RimWorld.Pawn_GuestTracker",
+      "needle": "if (Released)",
+      "locations": [
+        {
+          "line": 137,
+          "text": "if (Released)"
+        },
+        {
+          "line": 168,
+          "text": "if (Released)"
+        }
+      ],
+      "interpretation": "Release status makes a prisoner insecure in the security property."
+    },
+    {
+      "type": "RimWorld.Pawn_GuestTracker",
+      "needle": "if (pawn.HostFaction == null)",
+      "locations": [
+        {
+          "line": 141,
+          "text": "if (pawn.HostFaction == null)"
+        }
+      ],
+      "interpretation": "A secure prisoner needs a host faction."
+    },
+    {
+      "type": "RimWorld.Pawn_GuestTracker",
+      "needle": "if (PrisonBreakUtility.IsPrisonBreaking(pawn))",
+      "locations": [
+        {
+          "line": 155,
+          "text": "if (PrisonBreakUtility.IsPrisonBreaking(pawn))"
+        }
+      ],
+      "interpretation": "An active prison break makes the spawned prisoner insecure."
+    },
+    {
+      "type": "RimWorld.Pawn_GuestTracker",
+      "needle": "interactionMode != PrisonerInteractionModeDefOf.Execution",
+      "locations": [
+        {
+          "line": 89,
+          "text": "if (interactionMode != PrisonerInteractionModeDefOf.Execution)"
+        }
+      ],
+      "interpretation": "Execution mode disables food supply."
+    },
+    {
+      "type": "RimWorld.Pawn_GuestTracker",
+      "needle": "interactionMode == PrisonerInteractionModeDefOf.Release",
+      "locations": [
+        {
+          "line": 91,
+          "text": "if (interactionMode == PrisonerInteractionModeDefOf.Release)"
+        }
+      ],
+      "interpretation": "Release mode has a special supply condition."
+    },
+    {
+      "type": "RimWorld.Pawn_GuestTracker",
+      "needle": "return pawn.Downed;",
+      "locations": [
+        {
+          "line": 93,
+          "text": "return pawn.Downed;"
+        }
+      ],
+      "interpretation": "Release mode allows food delivery only to a downed prisoner in this property."
+    },
+    {
+      "type": "RimWorld.ITab_Pawn_Prisoner",
+      "needle": "public class ITab_Pawn_Prisoner : ITab_Pawn_Visitor",
+      "locations": [
+        {
+          "line": 3,
+          "text": "public class ITab_Pawn_Prisoner : ITab_Pawn_Visitor"
+        }
+      ],
+      "interpretation": "Actual prisoner tab implementation inherits the visitor tab."
+    },
+    {
+      "type": "RimWorld.ITab_Pawn_Visitor",
+      "needle": "DoPrisonerTab(wildMan, listing_Standard);",
+      "locations": [
+        {
+          "line": 48,
+          "text": "DoPrisonerTab(wildMan, listing_Standard);"
+        }
+      ],
+      "interpretation": "The inherited visitor tab builds prisoner controls."
+    },
+    {
+      "type": "RimWorld.WorkGiver_Warden_DeliverFood",
+      "needle": "if (!pawn2.guest.CanBeBroughtFood)",
+      "locations": [
+        {
+          "line": 16,
+          "text": "if (!pawn2.guest.CanBeBroughtFood)"
+        }
+      ],
+      "interpretation": "Delivery requires the guest supply-state permission."
+    },
+    {
+      "type": "RimWorld.WorkGiver_Warden_DeliverFood",
+      "needle": "if (!pawn2.Position.IsInPrisonCell(pawn2.Map))",
+      "locations": [
+        {
+          "line": 20,
+          "text": "if (!pawn2.Position.IsInPrisonCell(pawn2.Map))"
+        }
+      ],
+      "interpretation": "Ordinary delivery requires the prisoner to be in a prison cell."
+    },
+    {
+      "type": "RimWorld.WorkGiver_Warden_DeliverFood",
+      "needle": "pawn2.needs.food.CurLevelPercentage >= pawn2.needs.food.PercentageThreshHungry + 0.02f",
+      "locations": [
+        {
+          "line": 28,
+          "text": "if (pawn2.needs.food.CurLevelPercentage >= pawn2.needs.food.PercentageThreshHungry + 0.02f)"
+        }
+      ],
+      "interpretation": "Delivery starts strictly below the hungry threshold plus two percentage points."
+    },
+    {
+      "type": "RimWorld.WorkGiver_Warden_DeliverFood",
+      "needle": "if (WardenFeedUtility.ShouldBeFed(pawn2))",
+      "locations": [
+        {
+          "line": 32,
+          "text": "if (WardenFeedUtility.ShouldBeFed(pawn2))"
+        }
+      ],
+      "interpretation": "Bedside-fed prisoners are excluded from ordinary floor delivery."
+    },
+    {
+      "type": "RimWorld.WorkGiver_Warden_DeliverFood",
+      "needle": "canUseInventory: true, canUsePackAnimalInventory: false",
+      "locations": [
+        {
+          "line": 36,
+          "text": "if (!FoodUtility.TryFindBestFoodSourceFor(pawn, pawn2, pawn2.needs.food.CurCategory == HungerCategory.Starving, out var foodSource, out var foodDef, canRefillDispenser: false, canUseInventory: true, canUsePackAnimalInventory: false, allowForbidden: false, allowCorpse: false, allowSociallyImproper: false, allowHarvest: false, forceScanWholeMap: false, ignoreReservations: false, calculateWantedStackCount: true))"
+        }
+      ],
+      "interpretation": "The warden may supply its own inventory but not pack-animal inventory through this giver."
+    },
+    {
+      "type": "RimWorld.WorkGiver_Warden_DeliverFood",
+      "needle": "calculateWantedStackCount: true",
+      "locations": [
+        {
+          "line": 36,
+          "text": "if (!FoodUtility.TryFindBestFoodSourceFor(pawn, pawn2, pawn2.needs.food.CurCategory == HungerCategory.Starving, out var foodSource, out var foodDef, canRefillDispenser: false, canUseInventory: true, canUsePackAnimalInventory: false, allowForbidden: false, allowCorpse: false, allowSociallyImproper: false, allowHarvest: false, forceScanWholeMap: false, ignoreReservations: false, calculateWantedStackCount: true))"
+        }
+      ],
+      "interpretation": "Candidate reservation checks consider the prisoner desired quantity."
+    },
+    {
+      "type": "RimWorld.WorkGiver_Warden_DeliverFood",
+      "needle": "if (foodSource.GetRoom() == pawn2.GetRoom())",
+      "locations": [
+        {
+          "line": 40,
+          "text": "if (foodSource.GetRoom() == pawn2.GetRoom())"
+        }
+      ],
+      "interpretation": "If the selected food is already in the prisoner room, no delivery job is created."
+    },
+    {
+      "type": "RimWorld.WorkGiver_Warden_DeliverFood",
+      "needle": "if (FoodAvailableInRoomTo(pawn2))",
+      "locations": [
+        {
+          "line": 44,
+          "text": "if (FoodAvailableInRoomTo(pawn2))"
+        }
+      ],
+      "interpretation": "Existing room food can suppress a new delivery."
+    },
+    {
+      "type": "RimWorld.WorkGiver_Warden_DeliverFood",
+      "needle": "JobMaker.MakeJob(JobDefOf.DeliverFood, foodSource, pawn2)",
+      "locations": [
+        {
+          "line": 49,
+          "text": "Job job = JobMaker.MakeJob(JobDefOf.DeliverFood, foodSource, pawn2);"
+        }
+      ],
+      "interpretation": "Delivery is a job with real food and prisoner targets."
+    },
+    {
+      "type": "RimWorld.WorkGiver_Warden_DeliverFood",
+      "needle": "FoodUtility.WillIngestStackCountOf(pawn2, foodDef, nutrition)",
+      "locations": [
+        {
+          "line": 50,
+          "text": "job.count = FoodUtility.WillIngestStackCountOf(pawn2, foodDef, nutrition);"
+        }
+      ],
+      "interpretation": "Requested amount uses the prisoner nutritional deficit."
+    },
+    {
+      "type": "RimWorld.WorkGiver_Warden_DeliverFood",
+      "needle": "RCellFinder.SpotToChewStandingNear(pawn2, foodSource)",
+      "locations": [
+        {
+          "line": 51,
+          "text": "job.targetC = RCellFinder.SpotToChewStandingNear(pawn2, foodSource);"
+        }
+      ],
+      "interpretation": "Delivery destination is computed near the prisoner, using prisoner room and access context."
+    },
+    {
+      "type": "RimWorld.WorkGiver_Warden_DeliverFood",
+      "needle": "NutritionAvailableForFrom(prisoner, prisoner.carryTracker.CarriedThing) > 0f",
+      "locations": [
+        {
+          "line": 57,
+          "text": "if (prisoner.carryTracker.CarriedThing != null && NutritionAvailableForFrom(prisoner, prisoner.carryTracker.CarriedThing) > 0f)"
+        }
+      ],
+      "interpretation": "Any positive edible nutrition already in the target prisoner hands suppresses more supply."
+    },
+    {
+      "type": "RimWorld.WorkGiver_Warden_DeliverFood",
+      "needle": "List<Region> regions = room.Regions;",
+      "locations": [
+        {
+          "line": 68,
+          "text": "List<Region> regions = room.Regions;"
+        }
+      ],
+      "interpretation": "The sufficiency calculation scans the whole room through its regions."
+    },
+    {
+      "type": "RimWorld.WorkGiver_Warden_DeliverFood",
+      "needle": "ThingRequestGroup.FoodSourceNotPlantOrTree",
+      "locations": [
+        {
+          "line": 72,
+          "text": "List<Thing> list = region.ListerThings.ThingsInGroup(ThingRequestGroup.FoodSourceNotPlantOrTree);"
+        }
+      ],
+      "interpretation": "Existing planted crops are not counted as room food here."
+    },
+    {
+      "type": "RimWorld.WorkGiver_Warden_DeliverFood",
+      "needle": "!thing.def.IsIngestible || (int)thing.def.ingestible.preferability > 3",
+      "locations": [
+        {
+          "line": 76,
+          "text": "if (!thing.def.IsIngestible || (int)thing.def.ingestible.preferability > 3)"
+        }
+      ],
+      "interpretation": "The room-food count excludes the lowest-preference ordinary ingestibles, while still considering dispenser-like sources."
+    },
+    {
+      "type": "RimWorld.WorkGiver_Warden_DeliverFood",
+      "needle": "num += pawn.needs.food.NutritionWanted;",
+      "locations": [
+        {
+          "line": 87,
+          "text": "num += pawn.needs.food.NutritionWanted;"
+        }
+      ],
+      "interpretation": "Demand sums hungry prisoners in the shared room, excluding those carrying food they will eat."
+    },
+    {
+      "type": "RimWorld.WorkGiver_Warden_DeliverFood",
+      "needle": "if (num2 + 0.5f >= num)",
+      "locations": [
+        {
+          "line": 91,
+          "text": "if (num2 + 0.5f >= num)"
+        }
+      ],
+      "interpretation": "Existing room food gets a half-nutrition tolerance when compared against total hungry demand."
+    },
+    {
+      "type": "RimWorld.WorkGiver_Warden_DeliverFood",
+      "needle": "foodSource.def.IsNutritionGivingIngestible && p.WillEat(foodSource)",
+      "locations": [
+        {
+          "line": 100,
+          "text": "if (foodSource.def.IsNutritionGivingIngestible && p.WillEat(foodSource))"
+        }
+      ],
+      "interpretation": "Room availability uses prisoner self-eating context, without a player getter."
+    },
+    {
+      "type": "RimWorld.WorkGiver_Warden_DeliverFood",
+      "needle": "foodSource.GetStatValue(StatDefOf.Nutrition) * (float)foodSource.stackCount",
+      "locations": [
+        {
+          "line": 102,
+          "text": "return foodSource.GetStatValue(StatDefOf.Nutrition) * (float)foodSource.stackCount;"
+        }
+      ],
+      "interpretation": "Available ordinary nutrition is stat times actual stack count."
+    },
+    {
+      "type": "RimWorld.WorkGiver_Warden_DeliverFood",
+      "needle": "p.CanReach(building_NutrientPasteDispenser.InteractionCell, PathEndMode.OnCell, Danger.Some)",
+      "locations": [
+        {
+          "line": 104,
+          "text": "if (p.RaceProps.ToolUser && p.health.capacities.CapableOf(PawnCapacityDefOf.Manipulation) && foodSource is Building_NutrientPasteDispenser { CanDispenseNow: not false } building_NutrientPasteDispenser && p.CanReach(building_NutrientPasteDispenser.InteractionCell, PathEndMode.OnCell, Danger.Some))"
+        }
+      ],
+      "interpretation": "An available nutrient-paste dispenser must be reachable by the prisoner."
+    },
+    {
+      "type": "RimWorld.WorkGiver_Warden_DeliverFood",
+      "needle": "return 99999f;",
+      "locations": [
+        {
+          "line": 106,
+          "text": "return 99999f;"
+        }
+      ],
+      "interpretation": "An operable reachable paste dispenser acts as ample room supply in this estimate."
+    },
+    {
+      "type": "RimWorld.WardenFeedUtility",
+      "needle": "if (!p.IsPrisonerOfColony)",
+      "locations": [
+        {
+          "line": 9,
+          "text": "if (!p.IsPrisonerOfColony)"
+        }
+      ],
+      "interpretation": "Bedside warden feeding is specific to colony prisoners."
+    },
+    {
+      "type": "RimWorld.WardenFeedUtility",
+      "needle": "if (!p.InBed())",
+      "locations": [
+        {
+          "line": 13,
+          "text": "if (!p.InBed())"
+        }
+      ],
+      "interpretation": "Bedside feeding requires a bed."
+    },
+    {
+      "type": "RimWorld.WardenFeedUtility",
+      "needle": "if (!p.Downed && !HealthAIUtility.ShouldSeekMedicalRest(p))",
+      "locations": [
+        {
+          "line": 21,
+          "text": "if (!p.Downed && !HealthAIUtility.ShouldSeekMedicalRest(p))"
+        }
+      ],
+      "interpretation": "Downed or medically resting prisoners qualify."
+    },
+    {
+      "type": "RimWorld.WorkGiver_Warden_Feed",
+      "needle": "currentRespectedRestriction.filter.AllowedDefCount == 0",
+      "locations": [
+        {
+          "line": 30,
+          "text": "if (currentRespectedRestriction != null && currentRespectedRestriction.filter.AllowedDefCount == 0)"
+        }
+      ],
+      "interpretation": "An empty respected food policy prevents bedside feeding."
+    },
+    {
+      "type": "RimWorld.WorkGiver_Warden_Feed",
+      "needle": "pawn2.foodRestriction.GetCurrentRespectedRestriction(pawn)",
+      "locations": [
+        {
+          "line": 29,
+          "text": "FoodPolicy currentRespectedRestriction = pawn2.foodRestriction.GetCurrentRespectedRestriction(pawn);"
+        }
+      ],
+      "interpretation": "Bedside feeding respects the prisoner policy with the warden as getter."
+    },
+    {
+      "type": "RimWorld.WorkGiver_Warden_Feed",
+      "needle": "JobMaker.MakeJob(JobDefOf.FeedPatient, foodSource, pawn2)",
+      "locations": [
+        {
+          "line": 42,
+          "text": "Job job = JobMaker.MakeJob(JobDefOf.FeedPatient, foodSource, pawn2);"
+        }
+      ],
+      "interpretation": "Bedside prisoner feeding creates a FeedPatient job instead of floor delivery."
+    },
+    {
+      "type": "RimWorld.WorkGiver_FeedPatient",
+      "needle": "WardenFeedUtility.ShouldBeFed(pawn2) && !pawn.IsColonyMech",
+      "locations": [
+        {
+          "line": 54,
+          "text": "if (WardenFeedUtility.ShouldBeFed(pawn2) && !pawn.IsColonyMech)"
+        }
+      ],
+      "interpretation": "Ordinary patient-feeding work yields to the warden branch, except for colony mechs."
+    },
+    {
+      "type": "RimWorld.FoodUtility",
+      "needle": "eater.WillEat(thing, holder, careIfNotAcceptableForTitle: true, allowVenerated)",
+      "locations": [
+        {
+          "line": 343,
+          "text": "if (thing.def.IsNutritionGivingIngestible && thing.IngestibleNow && eater.WillEat(thing, holder, careIfNotAcceptableForTitle: true, allowVenerated) && (int)thing.def.ingestible.preferability >= (int)minFoodPref && (int)thing.def.ingestible.preferability <= (int)maxFoodPref && (allowDrug || !thing.def.IsDrug) && NutritionForEater(eater, thing) * (float)thing.stackCount >= minStackNutrition)"
+        }
+      ],
+      "interpretation": "Inventory food is filtered for the actual eater with its holder as getter."
+    },
+    {
+      "type": "RimWorld.FoodUtility",
+      "needle": "!eater.WillEat(t, getter, careIfNotAcceptableForTitle: true, allowVenerated)",
+      "locations": [
+        {
+          "line": 427,
+          "text": "if ((int)t.def.ingestible.preferability < (int)minPref || (int)t.def.ingestible.preferability > (int)maxPref || !eater.WillEat(t, getter, careIfNotAcceptableForTitle: true, allowVenerated) || !t.def.IsNutritionGivingIngestible || !t.IngestibleNow || (!allowCorpse && t is Corpse) || (!allowDrug && t.def.IsDrug) || (!allowForbidden && t.IsForbidden(getter)) || (!desperate && t.IsNotFresh()) || t.IsDessicated() || !IsFoodSourceOnMapSociallyProper(t, getter, eater, allowSociallyImproper) || (!getter.AnimalAwareOf(t) && !forceScanWholeMap))"
+        }
+      ],
+      "interpretation": "Ground food is filtered for the prisoner eater and supplying warden."
+    },
+    {
+      "type": "RimWorld.Pawn_FoodRestrictionTracker",
+      "needle": "pawn.Faction != Faction.OfPlayer && (getter == null || getter.Faction != Faction.OfPlayer)",
+      "locations": [
+        {
+          "line": 65,
+          "text": "if (pawn.Faction != Faction.OfPlayer && (getter == null || getter.Faction != Faction.OfPlayer))"
+        }
+      ],
+      "interpretation": "Non-player prisoner self-eating ignores the colony food policy; player supply enforces it."
+    },
+    {
+      "type": "RimWorld.Pawn_FoodRestrictionTracker",
+      "needle": "if (pawn.InMentalState)",
+      "locations": [
+        {
+          "line": 69,
+          "text": "if (pawn.InMentalState)"
+        }
+      ],
+      "interpretation": "An eater in a mental state does not respect its ordinary food policy."
+    },
+    {
+      "type": "RimWorld.FoodUtility",
+      "needle": "t.IsSociallyProper(eater, eater.IsPrisonerOfColony, animalsCare)",
+      "locations": [
+        {
+          "line": 566,
+          "text": "if (!t.IsSociallyProper(getter) && !t.IsSociallyProper(eater, eater.IsPrisonerOfColony, animalsCare))"
+        }
+      ],
+      "interpretation": "Food selection also considers eater social room rights."
+    },
+    {
+      "type": "RimWorld.SocialProperness",
+      "needle": "return intVec.GetRoom(t.Map) == p.GetRoom();",
+      "locations": [
+        {
+          "line": 31,
+          "text": "return intVec.GetRoom(t.Map) == p.GetRoom();"
+        }
+      ],
+      "interpretation": "Prisoner social properness restricts relevant spawned food to the same room."
+    },
+    {
+      "type": "RimWorld.SocialProperness",
+      "needle": "return !intVec.IsInPrisonCell(t.Map);",
+      "locations": [
+        {
+          "line": 39,
+          "text": "return !intVec.IsInPrisonCell(t.Map);"
+        }
+      ],
+      "interpretation": "Non-prisoner social properness normally excludes food in prison cells."
+    },
+    {
+      "type": "RimWorld.SocialProperness",
+      "needle": "if (!t.def.socialPropernessMatters)",
+      "locations": [
+        {
+          "line": 18,
+          "text": "if (!t.def.socialPropernessMatters)"
+        }
+      ],
+      "interpretation": "Only objects marked to care about social properness use these room restrictions."
+    },
+    {
+      "type": "RimWorld.RCellFinder",
+      "needle": "return SpotToStandDuringJob(pawn, Validator);",
+      "locations": [
+        {
+          "line": 1020,
+          "text": "return SpotToStandDuringJob(pawn, Validator);"
+        }
+      ],
+      "interpretation": "Prisoner delivery delegates standing-cell search to a real location solver."
+    },
+    {
+      "type": "RimWorld.RCellFinder",
+      "needle": "Toils_Ingest.TryFindAdjacentIngestionPlaceSpot(c, ingestible.def, pawn",
+      "locations": [
+        {
+          "line": 1023,
+          "text": "if (!Toils_Ingest.TryFindAdjacentIngestionPlaceSpot(c, ingestible.def, pawn, out var _))"
+        }
+      ],
+      "interpretation": "The normal standing location must support a nearby eating place."
+    },
+    {
+      "type": "RimWorld.RCellFinder",
+      "needle": "pawn.HostFaction != null && c.GetRoom(pawn.Map) != pawn.GetRoom()",
+      "locations": [
+        {
+          "line": 1048,
+          "text": "if (pawn.HostFaction != null && c.GetRoom(pawn.Map) != pawn.GetRoom())"
+        }
+      ],
+      "interpretation": "Normal destination validation keeps hosted pawns within their current room."
+    },
+    {
+      "type": "RimWorld.RCellFinder",
+      "needle": "GenPlace.HaulPlaceBlockerIn(null, c, pawn.Map, checkBlueprintsAndFrames: false)",
+      "locations": [
+        {
+          "line": 1058,
+          "text": "if (GenPlace.HaulPlaceBlockerIn(null, c, pawn.Map, checkBlueprintsAndFrames: false) != null)"
+        }
+      ],
+      "interpretation": "Non-desperate standing candidates avoid drop-placement blockers."
+    },
+    {
+      "type": "RimWorld.RCellFinder",
+      "needle": "c.ContainsStaticFire(pawn.Map) || c.ContainsTrap(pawn.Map)",
+      "locations": [
+        {
+          "line": 1067,
+          "text": "if (c.ContainsStaticFire(pawn.Map) || c.ContainsTrap(pawn.Map))"
+        }
+      ],
+      "interpretation": "Normal region candidate validation rejects static fire and traps even in desperate mode."
+    },
+    {
+      "type": "RimWorld.RCellFinder",
+      "needle": "pawn.Map.pawnDestinationReservationManager.CanReserve(c, pawn)",
+      "locations": [
+        {
+          "line": 427,
+          "text": "if (!pawn.Map.pawnDestinationReservationManager.CanReserve(c, pawn))"
+        },
+        {
+          "line": 1071,
+          "text": "if (!pawn.Map.pawnDestinationReservationManager.CanReserve(c, pawn))"
+        }
+      ],
+      "interpretation": "Location search considers destination reservations for the prisoner."
+    },
+    {
+      "type": "RimWorld.RCellFinder",
+      "needle": "float maxDistance = 4f;",
+      "locations": [
+        {
+          "line": 1087,
+          "text": "float maxDistance = 4f;"
+        }
+      ],
+      "interpretation": "Standing search begins near the pawn."
+    },
+    {
+      "type": "RimWorld.RCellFinder",
+      "needle": "maxDistance = 15f;",
+      "locations": [
+        {
+          "line": 1113,
+          "text": "maxDistance = 15f;"
+        },
+        {
+          "line": 1122,
+          "text": "maxDistance = 15f;"
+        }
+      ],
+      "interpretation": "Later search stages expand distance."
+    },
+    {
+      "type": "RimWorld.RCellFinder",
+      "needle": "return region.RandomCell;",
+      "locations": [
+        {
+          "line": 1145,
+          "text": "return region.RandomCell;"
+        }
+      ],
+      "interpretation": "The final fallback is a random cell of the original region and is weaker than the regular candidate checks."
+    },
+    {
+      "type": "Verse.Room",
+      "needle": "if (Building_Bed.RoomCanBePrisonCell(this))",
+      "locations": [
+        {
+          "line": 704,
+          "text": "if (Building_Bed.RoomCanBePrisonCell(this))"
+        }
+      ],
+      "interpretation": "A room must qualify physically before prisoner beds mark it as a prison cell."
+    },
+    {
+      "type": "Verse.Room",
+      "needle": "containedAndAdjacentThings[i] is Building_Bed { ForPrisoners: not false }",
+      "locations": [
+        {
+          "line": 709,
+          "text": "if (containedAndAdjacentThings[i] is Building_Bed { ForPrisoners: not false })"
+        }
+      ],
+      "interpretation": "Prison-cell status is derived from actual prisoner beds in or beside the room."
+    },
+    {
+      "type": "Verse.Room",
+      "needle": "isPrisonCell = true;",
+      "locations": [
+        {
+          "line": 711,
+          "text": "isPrisonCell = true;"
+        }
+      ],
+      "interpretation": "Prison status is cached and recalculated with room shape."
+    },
+    {
+      "type": "RimWorld.Building_Bed",
+      "needle": "if (r.ProperRoom)",
+      "locations": [
+        {
+          "line": 335,
+          "text": "if (r.ProperRoom)"
+        }
+      ],
+      "interpretation": "A candidate prison room must be a proper room."
+    },
+    {
+      "type": "RimWorld.Building_Bed",
+      "needle": "return !r.IsHuge;",
+      "locations": [
+        {
+          "line": 337,
+          "text": "return !r.IsHuge;"
+        }
+      ],
+      "interpretation": "Huge rooms are excluded by the native prisoner-bed room qualification."
+    },
+    {
+      "type": "RimWorld.JobDriver_FoodDeliver",
+      "needle": "pawn.Reserve(Deliveree, job, 1, -1, null, errorOnFailed)",
+      "locations": [
+        {
+          "line": 44,
+          "text": "return pawn.Reserve(Deliveree, job, 1, -1, null, errorOnFailed);"
+        }
+      ],
+      "interpretation": "The delivery job reserves the actual prisoner exclusively before its toils."
+    },
+    {
+      "type": "RimWorld.JobDriver_FoodDeliver",
+      "needle": "Scribe_Values.Look(ref eatingFromInventory, \"eatingFromInventory\"",
+      "locations": [
+        {
+          "line": 23,
+          "text": "Scribe_Values.Look(ref eatingFromInventory, \"eatingFromInventory\", defaultValue: false);"
+        }
+      ],
+      "interpretation": "The selected inventory path persists in the job driver."
+    },
+    {
+      "type": "RimWorld.JobDriver_FoodDeliver",
+      "needle": "Scribe_Values.Look(ref usingNutrientPasteDispenser, \"usingNutrientPasteDispenser\"",
+      "locations": [
+        {
+          "line": 22,
+          "text": "Scribe_Values.Look(ref usingNutrientPasteDispenser, \"usingNutrientPasteDispenser\", defaultValue: false);"
+        }
+      ],
+      "interpretation": "The dispenser path persists separately."
+    },
+    {
+      "type": "RimWorld.JobDriver_FoodDeliver",
+      "needle": "this.FailOnDespawnedOrNull(TargetIndex.B);",
+      "locations": [
+        {
+          "line": 49,
+          "text": "this.FailOnDespawnedOrNull(TargetIndex.B);"
+        }
+      ],
+      "interpretation": "A disappearing prisoner invalidates delivery."
+    },
+    {
+      "type": "RimWorld.JobDriver_FoodDeliver",
+      "needle": "Toils_Misc.TakeItemFromInventoryToCarrier(pawn, TargetIndex.A)",
+      "locations": [
+        {
+          "line": 52,
+          "text": "yield return Toils_Misc.TakeItemFromInventoryToCarrier(pawn, TargetIndex.A);"
+        }
+      ],
+      "interpretation": "Inventory supply transfers physical food to the carrying container."
+    },
+    {
+      "type": "RimWorld.JobDriver_FoodDeliver",
+      "needle": "Toils_Ingest.ReserveFoodFromStackForIngesting(TargetIndex.A, Deliveree)",
+      "locations": [
+        {
+          "line": 61,
+          "text": "yield return Toils_Ingest.ReserveFoodFromStackForIngesting(TargetIndex.A, Deliveree);"
+        }
+      ],
+      "interpretation": "Ground supply reserves actual food portions after the initial prisoner reservation."
+    },
+    {
+      "type": "RimWorld.JobDriver_FoodDeliver",
+      "needle": "Toils_Ingest.PickupIngestible(TargetIndex.A, Deliveree)",
+      "locations": [
+        {
+          "line": 63,
+          "text": "yield return Toils_Ingest.PickupIngestible(TargetIndex.A, Deliveree);"
+        }
+      ],
+      "interpretation": "The warden actually picks up food."
+    },
+    {
+      "type": "RimWorld.JobDriver_FoodDeliver",
+      "needle": "actor.pather.StartPath(curJob.targetC, PathEndMode.OnCell)",
+      "locations": [
+        {
+          "line": 70,
+          "text": "actor.pather.StartPath(curJob.targetC, PathEndMode.OnCell);"
+        }
+      ],
+      "interpretation": "The warden walks to the stored destination cell."
+    },
+    {
+      "type": "RimWorld.JobDriver_FoodDeliver",
+      "needle": "!base.pawn.IsCarryingThing(job.GetTarget(TargetIndex.A).Thing)",
+      "locations": [
+        {
+          "line": 76,
+          "text": "if (!base.pawn.IsCarryingThing(job.GetTarget(TargetIndex.A).Thing))"
+        }
+      ],
+      "interpretation": "The delivery leg fails if the selected physical food is no longer being carried."
+    },
+    {
+      "type": "RimWorld.JobDriver_FoodDeliver",
+      "needle": "if (!pawn.IsPrisonerOfColony)",
+      "locations": [
+        {
+          "line": 81,
+          "text": "if (!pawn.IsPrisonerOfColony)"
+        }
+      ],
+      "interpretation": "Loss of prisoner status invalidates the delivery leg."
+    },
+    {
+      "type": "RimWorld.JobDriver_FoodDeliver",
+      "needle": "return !pawn.guest.CanBeBroughtFood;",
+      "locations": [
+        {
+          "line": 85,
+          "text": "return !pawn.guest.CanBeBroughtFood;"
+        }
+      ],
+      "interpretation": "Guest supply permission is rechecked during the delivery leg."
+    },
+    {
+      "type": "RimWorld.JobDriver_FoodDeliver",
+      "needle": "pawn.carryTracker.TryDropCarriedThing(toil2.actor.jobs.curJob.targetC.Cell, ThingPlaceMode.Direct, out var _);",
+      "locations": [
+        {
+          "line": 91,
+          "text": "pawn.carryTracker.TryDropCarriedThing(toil2.actor.jobs.curJob.targetC.Cell, ThingPlaceMode.Direct, out var _);"
+        }
+      ],
+      "interpretation": "At the destination the warden attempts physical placement; this is not ingestion."
+    },
+    {
+      "type": "RimWorld.Toils_Misc",
+      "needle": "int count = Mathf.Min(thing.stackCount, curJob.count);",
+      "locations": [
+        {
+          "line": 36,
+          "text": "int count = Mathf.Min(thing.stackCount, curJob.count);"
+        }
+      ],
+      "interpretation": "Inventory transfer is limited by actual stock and requested amount."
+    },
+    {
+      "type": "RimWorld.Toils_Misc",
+      "needle": "TryTransferToContainer(thing, pawn.carryTracker.innerContainer, count)",
+      "locations": [
+        {
+          "line": 37,
+          "text": "pawn.inventory.innerContainer.TryTransferToContainer(thing, pawn.carryTracker.innerContainer, count);"
+        }
+      ],
+      "interpretation": "The same physical inventory food moves into the carrying container."
+    },
+    {
+      "type": "RimWorld.Toils_Ingest",
+      "needle": "int b = FoodUtility.WillIngestStackCountOf(ingester",
+      "locations": [
+        {
+          "line": 210,
+          "text": "int b = FoodUtility.WillIngestStackCountOf(ingester, target.Thing.def, FoodUtility.NutritionForEater(ingester, target.Thing));"
+        }
+      ],
+      "interpretation": "Ground food reservation recalculates an eater-based amount."
+    },
+    {
+      "type": "RimWorld.Toils_Ingest",
+      "needle": "num = Mathf.Min(target.Thing.stackCount, b);",
+      "locations": [
+        {
+          "line": 211,
+          "text": "num = Mathf.Min(target.Thing.stackCount, b);"
+        }
+      ],
+      "interpretation": "Ground reservation amount is limited to the actual remaining stack."
+    },
+    {
+      "type": "RimWorld.Toils_Ingest",
+      "needle": "!toil.actor.CanReserve(target, 10, num)",
+      "locations": [
+        {
+          "line": 213,
+          "text": "if (num == -1 || !target.HasThing || !toil.actor.CanReserve(target, 10, num))"
+        }
+      ],
+      "interpretation": "Food stacks support multiple distinct reservations only when quantity allows."
+    },
+    {
+      "type": "RimWorld.Toils_Ingest",
+      "needle": "toil.actor.Reserve(target, toil.actor.CurJob, 10, num);",
+      "locations": [
+        {
+          "line": 219,
+          "text": "toil.actor.Reserve(target, toil.actor.CurJob, 10, num);"
+        }
+      ],
+      "interpretation": "The food portion reservation belongs to the actual job."
+    },
+    {
+      "type": "RimWorld.Toils_Ingest",
+      "needle": "int count = Mathf.Min(thing.stackCount, curJob.count);",
+      "locations": [
+        {
+          "line": 58,
+          "text": "int count = Mathf.Min(thing.stackCount, curJob.count);"
+        }
+      ],
+      "interpretation": "Actual pickup limits the original job count to what remains."
+    },
+    {
+      "type": "RimWorld.Toils_Ingest",
+      "needle": "actor.carryTracker.TryStartCarry(thing, count);",
+      "locations": [
+        {
+          "line": 59,
+          "text": "actor.carryTracker.TryStartCarry(thing, count);"
+        }
+      ],
+      "interpretation": "Pickup is a physical transfer/split."
+    },
+    {
+      "type": "RimWorld.Toils_Ingest",
+      "needle": "actor.jobs.curJob.targetA = actor.carryTracker.CarriedThing;",
+      "locations": [
+        {
+          "line": 64,
+          "text": "actor.jobs.curJob.targetA = actor.carryTracker.CarriedThing;"
+        }
+      ],
+      "interpretation": "After splitting, the job target follows the carried entity."
+    },
+    {
+      "type": "Verse.Pawn_CarryTracker",
+      "needle": "count = Mathf.Min(count, AvailableStackSpace(item.def));",
+      "locations": [
+        {
+          "line": 91,
+          "text": "count = Mathf.Min(count, AvailableStackSpace(item.def));"
+        }
+      ],
+      "interpretation": "Carrying capacity further caps actual pickup."
+    },
+    {
+      "type": "Verse.Pawn_CarryTracker",
+      "needle": "Thing thing = item.SplitOff(count);",
+      "locations": [
+        {
+          "line": 94,
+          "text": "Thing thing = item.SplitOff(count);"
+        }
+      ],
+      "interpretation": "Pickup creates a split only from existing stock."
+    },
+    {
+      "type": "Verse.Pawn_CarryTracker",
+      "needle": "Scribe_Deep.Look(ref innerContainer, \"innerContainer\", this);",
+      "locations": [
+        {
+          "line": 40,
+          "text": "Scribe_Deep.Look(ref innerContainer, \"innerContainer\", this);"
+        }
+      ],
+      "interpretation": "Actual carried contents persist."
+    },
+    {
+      "type": "Verse.Pawn_CarryTracker",
+      "needle": "innerContainer.TryDrop(CarriedThing, dropLoc, pawn.MapHeld, mode",
+      "locations": [
+        {
+          "line": 134,
+          "text": "if (innerContainer.TryDrop(CarriedThing, dropLoc, pawn.MapHeld, mode, out resultingThing, placedAction))"
+        },
+        {
+          "line": 148,
+          "text": "if (innerContainer.TryDrop(CarriedThing, dropLoc, pawn.MapHeld, mode, count, out resultingThing, placedAction))"
+        }
+      ],
+      "interpretation": "Dropping delegates actual placement from the carrying container."
+    },
+    {
+      "type": "Verse.ThingOwner",
+      "needle": "if (GenDrop.TryDropSpawn(thing, dropLoc, map, mode, out lastResultingThing",
+      "locations": [
+        {
+          "line": 485,
+          "text": "if (GenDrop.TryDropSpawn(thing, dropLoc, map, mode, out lastResultingThing, placedAction, nearPlaceValidator, playDropSound))"
+        }
+      ],
+      "interpretation": "Dropping a full carried stack removes it from the container only after real placement succeeds."
+    },
+    {
+      "type": "Verse.AI.ReservationManager",
+      "needle": "if (reservation.MaxPawns != maxPawns)",
+      "locations": [
+        {
+          "line": 221,
+          "text": "if (reservation.MaxPawns != maxPawns)"
+        },
+        {
+          "line": 284,
+          "text": "if (reservation.MaxPawns != maxPawns)"
+        }
+      ],
+      "interpretation": "Different reservation modes can conflict even when quantities seem sufficient."
+    },
+    {
+      "type": "Verse.AI.ReservationManager",
+      "needle": "num2 + num4 > num",
+      "locations": [
+        {
+          "line": 228,
+          "text": "if (num3 >= maxPawns || num2 + num4 > num)"
+        }
+      ],
+      "interpretation": "Aggregate claimed quantity cannot exceed the current stack."
+    },
+    {
+      "type": "Verse.AI.ReservationManager",
+      "needle": "map.physicalInteractionReservationManager.IsReserved(target)",
+      "locations": [
+        {
+          "line": 184,
+          "text": "if (map.physicalInteractionReservationManager.IsReserved(target) && !map.physicalInteractionReservationManager.IsReservedBy(claimant, target))"
+        },
+        {
+          "line": 274,
+          "text": "if (map.physicalInteractionReservationManager.IsReserved(target) && !map.physicalInteractionReservationManager.IsReservedBy(claimant, target))"
+        }
+      ],
+      "interpretation": "Physical interaction reservations also exclude competing use."
+    },
+    {
+      "type": "RimWorld.JobDriver_FoodFeedPatient",
+      "needle": "pawn.Reserve(Deliveree, job, 1",
+      "locations": [
+        {
+          "line": 39,
+          "text": "if (!pawn.Reserve(Deliveree, job, 1, -1, null, errorOnFailed))"
+        }
+      ],
+      "interpretation": "Bedside feeding also locks the patient."
+    },
+    {
+      "type": "RimWorld.JobDriver_FoodFeedPatient",
+      "needle": "FoodUtility.GetMaxAmountToPickup(Food, pawn, job.count)",
+      "locations": [
+        {
+          "line": 45,
+          "text": "int maxAmountToPickup = FoodUtility.GetMaxAmountToPickup(Food, pawn, job.count);"
+        }
+      ],
+      "interpretation": "Bedside-food pre-reservation limits to what is available after other reservations."
+    },
+    {
+      "type": "RimWorld.JobDriver_FoodFeedPatient",
+      "needle": "this.FailOn(() => !FoodUtility.ShouldBeFedBySomeone(Deliveree));",
+      "locations": [
+        {
+          "line": 58,
+          "text": "this.FailOn(() => !FoodUtility.ShouldBeFedBySomeone(Deliveree));"
+        }
+      ],
+      "interpretation": "Bedside feeding rechecks whether the patient still needs someone to feed them."
+    },
+    {
+      "type": "RimWorld.JobDriver_FoodFeedPatient",
+      "needle": "Toils_Ingest.ChewIngestible(Deliveree, 1.5f",
+      "locations": [
+        {
+          "line": 77,
+          "text": "yield return Toils_Ingest.ChewIngestible(Deliveree, 1.5f, TargetIndex.A).FailOnCannotTouch(TargetIndex.B, PathEndMode.Touch);"
+        }
+      ],
+      "interpretation": "Bedside feeding has a physical feeding delay on the prisoner."
+    },
+    {
+      "type": "RimWorld.JobDriver_FoodFeedPatient",
+      "needle": "Toils_Ingest.FinalizeIngest(Deliveree, TargetIndex.A)",
+      "locations": [
+        {
+          "line": 78,
+          "text": "Toil toil = Toils_Ingest.FinalizeIngest(Deliveree, TargetIndex.A);"
+        }
+      ],
+      "interpretation": "Only bedside consumption finalizes ingestion and nutrition for the patient."
+    },
+    {
+      "type": "Verse.AI.Pawn_JobTracker",
+      "needle": "pawn.ClearReservationsForJob(curJob);",
+      "locations": [
+        {
+          "line": 492,
+          "text": "pawn.ClearReservationsForJob(curJob);"
+        }
+      ],
+      "interpretation": "Ordinary job cleanup releases job reservations."
+    },
+    {
+      "type": "Verse.AI.Pawn_JobTracker",
+      "needle": "carryThingAfterJobOverride ?? job.def.carryThingAfterJob",
+      "locations": [
+        {
+          "line": 510,
+          "text": "if (pawn.IsCarrying() && !(carryThingAfterJobOverride ?? job.def.carryThingAfterJob))"
+        }
+      ],
+      "interpretation": "Post-job carrying depends on an explicit override or the job definition."
+    },
+    {
+      "type": "Verse.AI.Pawn_JobTracker",
+      "needle": "pawn.carryTracker.TryDropCarriedThing(pawn.Position, ThingPlaceMode.Near, out var _);",
+      "locations": [
+        {
+          "line": 365,
+          "text": "pawn.carryTracker.TryDropCarriedThing(pawn.Position, ThingPlaceMode.Near, out var _);"
+        },
+        {
+          "line": 516,
+          "text": "pawn.carryTracker.TryDropCarriedThing(pawn.Position, ThingPlaceMode.Near, out var _);"
+        }
+      ],
+      "interpretation": "Ordinary cleanup attempts a real nearby drop rather than deleting carried food."
+    },
+    {
+      "type": "RimWorld.JobGiver_GetFood",
+      "needle": "(int)pawn.needs.food.CurCategory < 3 && FoodUtility.ShouldBeFedBySomeone(pawn)",
+      "locations": [
+        {
+          "line": 32,
+          "text": "if ((int)pawn.needs.food.CurCategory < 3 && FoodUtility.ShouldBeFedBySomeone(pawn))"
+        }
+      ],
+      "interpretation": "A patient normally defers self-feeding while not starving; starvation removes this specific priority suppression."
+    },
+    {
+      "type": "RimWorld.JobGiver_GetFood",
+      "needle": "FoodUtility.TryFindBestFoodSourceFor(pawn, pawn, desperate",
+      "locations": [
+        {
+          "line": 78,
+          "text": "if (!FoodUtility.TryFindBestFoodSourceFor(pawn, pawn, desperate, out var foodSource, out var foodDef, canRefillDispenser: true, canUseInventory: true, canUsePackAnimalInventory: true, allowForbidden: false, allowCorpse, allowSociallyImproper: false, pawn.IsWildMan(), forceScanWholeMap, ignoreReservations: false, calculateWantedStackCount: false, allowVenerated: false, minPrefOverride))"
+        }
+      ],
+      "interpretation": "Prisoner self-feeding uses the same getter/eater hunger job as other humanoids."
+    },
+    {
+      "type": "RimWorld.JobDriver_Ingest",
+      "needle": "Toils_Ingest.FinalizeIngest(pawn, TargetIndex.A)",
+      "locations": [
+        {
+          "line": 115,
+          "text": "yield return Toils_Ingest.FinalizeIngest(pawn, TargetIndex.A);"
+        }
+      ],
+      "interpretation": "A delivered ration must later be consumed through an ingest job to grant nutrition."
+    }
+  ],
+  "boundedChecks": [
+    {
+      "type": "RimWorld.Pawn_GuestTracker",
+      "start": "public class Pawn_GuestTracker",
+      "end": "",
+      "lineStart": 9,
+      "lineEnd": 638,
+      "sha256": "a6e695132d1b3a9681b5f9e484ee922d153e479fdd60274f4735bb01cbf92bbc",
+      "absent": [
+        "allowFood",
+        "AllowFood",
+        "getsFood",
+        "GetsFood"
+      ],
+      "present": [
+        "CanBeBroughtFood",
+        "PrisonerInteractionModeDefOf.Execution",
+        "PrisonerInteractionModeDefOf.Release"
+      ],
+      "interpretation": "The installed guest tracker has no field/property with these food-toggle names; supply permission is mode-derived."
+    },
+    {
+      "type": "RimWorld.ITab_Pawn_Visitor",
+      "start": "public abstract class ITab_Pawn_Visitor",
+      "end": "",
+      "lineStart": 11,
+      "lineEnd": 621,
+      "sha256": "4afba80722229dd10ccd23e12f25ba29a83d191e454f3b7dbc44be0051aa99ff",
+      "absent": [
+        "allowFood",
+        "AllowFood",
+        "CanBeBroughtFood",
+        "foodRestriction",
+        "FoodRestriction",
+        "FoodPolicy"
+      ],
+      "present": [
+        "DoPrisonerTab",
+        "SetExclusiveInteraction"
+      ],
+      "interpretation": "The inherited prisoner tab does not expose a food permission or food-policy control through these tokens; no global UI absence claim."
+    },
+    {
+      "type": "RimWorld.PrisonerInteractionModeDef",
+      "start": "public class PrisonerInteractionModeDef",
+      "end": "",
+      "lineStart": 5,
+      "lineEnd": 29,
+      "sha256": "c8d5040bd2cf25e2dff7c5f44be9c398b164a8750616944596a263bf33b9f6a3",
+      "absent": [
+        "allowFood",
+        "AllowFood",
+        "CanBeBroughtFood"
+      ],
+      "present": [
+        "mustBeAwake",
+        "isNonExclusiveInteraction"
+      ],
+      "interpretation": "The local prisoner interaction definition class has no separate food-supply toggle."
+    },
+    {
+      "type": "RimWorld.Pawn_GuestTracker",
+      "start": "public bool CanBeBroughtFood",
+      "end": "public bool IsPrisoner",
+      "lineStart": 85,
+      "lineEnd": 101,
+      "sha256": "5f75b3424f48fdb19b89cf5defd7c26357ed3dc644680281c0313828e949f62b",
+      "absent": [
+        "foodRestriction",
+        "CanReserve",
+        "Nutrition",
+        "allowFood"
+      ],
+      "present": [
+        "Execution",
+        "Release",
+        "pawn.Downed"
+      ],
+      "interpretation": "Supply permission is distinct from nutrition, policies and physical eligibility."
+    },
+    {
+      "type": "RimWorld.WorkGiver_Warden_DeliverFood",
+      "start": "public override Job JobOnThing",
+      "end": "private static bool FoodAvailableInRoomTo",
+      "lineStart": 9,
+      "lineEnd": 55,
+      "sha256": "1d9c5a95784892811cbb5ef3ea198c76fb2f50015c8007a5e7969465e8acba11",
+      "absent": [
+        "CurLevel +=",
+        "FinalizeIngest",
+        "foodSource.Destroy"
+      ],
+      "present": [
+        "ShouldTakeCareOfPrisoner",
+        "CanBeBroughtFood",
+        "IsInPrisonCell",
+        "WardenFeedUtility.ShouldBeFed",
+        "foodSource.GetRoom() == pawn2.GetRoom()",
+        "FoodAvailableInRoomTo",
+        "SpotToChewStandingNear"
+      ],
+      "interpretation": "The giver selects a physical supply task after room and hunger checks; it does not feed nutrition immediately."
+    },
+    {
+      "type": "RimWorld.WorkGiver_Warden_DeliverFood",
+      "start": "private static bool FoodAvailableInRoomTo",
+      "end": "",
+      "lineStart": 55,
+      "lineEnd": 111,
+      "sha256": "2b1c9a6c211ebf418a0d3f9f30a6cc94d9c6351ff72bfd7ef3680a65c6f7ed9d",
+      "absent": [
+        "IngestibleNow",
+        "IsForbidden",
+        "CanReserve",
+        "IsNotFresh",
+        "CurrentFoodPolicy",
+        "GetCurrentRespectedRestriction"
+      ],
+      "present": [
+        "NutritionAvailableForFrom",
+        "NutritionWanted",
+        "num2 + 0.5f >= num",
+        "p.WillEat(foodSource)",
+        "p.CanReach(building_NutrientPasteDispenser"
+      ],
+      "interpretation": "Room sufficiency is an approximate count. It lacks ordinary food freshness, reservation and path checks; only dispenser access is checked directly here."
+    },
+    {
+      "type": "RimWorld.JobDriver_FoodDeliver",
+      "start": "public override bool TryMakePreToilReservations",
+      "end": "protected override IEnumerable<Toil> MakeNewToils",
+      "lineStart": 42,
+      "lineEnd": 47,
+      "sha256": "1e6eda5c1f86842e87b0dc28f25274bb58fb0c58c0a402c5271ed776a30d4644",
+      "absent": [
+        "Reserve(Food",
+        "TargetThingA",
+        "targetC"
+      ],
+      "present": [
+        "pawn.Reserve(Deliveree, job, 1"
+      ],
+      "interpretation": "Initial reservation locks the prisoner only; food is reserved later and this method does not lock the landing cell."
+    },
+    {
+      "type": "RimWorld.JobDriver_FoodDeliver",
+      "start": "protected override IEnumerable<Toil> MakeNewToils",
+      "end": "",
+      "lineStart": 47,
+      "lineEnd": 97,
+      "sha256": "4665741535c80cfd0f99ab45c69b871b73de2d6f3b367569f8c2f048c8498070",
+      "absent": [
+        "FinalizeIngest",
+        "Ingested(",
+        "CurLevel",
+        "GetCurrentRespectedRestriction",
+        "FoodAvailableInRoomTo",
+        "GetRoom()",
+        "IsInPrisonCell",
+        "WardenFeedUtility.ShouldBeFed"
+      ],
+      "present": [
+        "ReserveFoodFromStackForIngesting",
+        "StartPath(curJob.targetC",
+        "IsCarryingThing",
+        "IsPrisonerOfColony",
+        "CanBeBroughtFood",
+        "TryDropCarriedThing"
+      ],
+      "interpretation": "Active delivery validates disappearance, carrying, prisoner status and supply permission, but does not directly re-evaluate policy, hunger, room topology, room quantity or bedside eligibility."
+    },
+    {
+      "type": "RimWorld.JobDriver_FoodFeedPatient",
+      "start": "protected override IEnumerable<Toil> MakeNewToils",
+      "end": "",
+      "lineStart": 55,
+      "lineEnd": 92,
+      "sha256": "419c73afbd9722b7c11089f2d9f3aa778b8aa88d41f68c807ca110fbbf6d71d4",
+      "absent": [
+        "FoodAvailableInRoomTo",
+        "GetCurrentRespectedRestriction",
+        "CurrentFoodPolicy"
+      ],
+      "present": [
+        "ShouldBeFedBySomeone",
+        "ChewIngestible(Deliveree",
+        "FinalizeIngest(Deliveree"
+      ],
+      "interpretation": "Bedside feeding checks medical eligibility and actually ingests on the patient; it does not use room-supply suppression or re-read food policy here."
+    },
+    {
+      "type": "RimWorld.Toils_Ingest",
+      "start": "public static Toil ReserveFoodFromStackForIngesting",
+      "end": "public static bool TryFindAdjacentIngestionPlaceSpot",
+      "lineStart": 197,
+      "lineEnd": 227,
+      "sha256": "e38252825d5214b2547e3762b1ad007fcd45132b383531aa0e546b8fed36ecb2",
+      "absent": [
+        "curJob.count =",
+        "targetC"
+      ],
+      "present": [
+        "WillIngestStackCountOf",
+        "Mathf.Min(target.Thing.stackCount, b)",
+        "CanReserve(target, 10, num)",
+        "Reserve(target, toil.actor.CurJob, 10, num)"
+      ],
+      "interpretation": "Food reservation recalculates quantity but does not replace the job original count in this method."
+    },
+    {
+      "type": "RimWorld.Toils_Ingest",
+      "start": "public static Toil PickupIngestible",
+      "end": "public static Toil CarryIngestibleToChewSpot",
+      "lineStart": 43,
+      "lineEnd": 71,
+      "sha256": "7204ea33d1040f5a30b6eb350af130a809b3713acca4b774b302eb246ea12409",
+      "absent": [
+        "WillIngestStackCountOf",
+        "NutritionWanted",
+        "ReserveFoodFromStackForIngesting"
+      ],
+      "present": [
+        "Mathf.Min(thing.stackCount, curJob.count)",
+        "TryStartCarry",
+        "targetA = actor.carryTracker.CarriedThing"
+      ],
+      "interpretation": "Pickup uses actual stock and the original job count, then points targetA at the carried split."
+    },
+    {
+      "type": "RimWorld.RCellFinder",
+      "start": "public static IntVec3 SpotToStandDuringJobInRegion",
+      "end": "public static IntVec3 SpotToStandDuringJob(Pawn",
+      "lineStart": 1035,
+      "lineEnd": 1083,
+      "sha256": "a61a8ae944c4600cabb7f4bce18d6a1a24ce0c72cfde759be681bc5fa1ef2e08",
+      "absent": [
+        "curJob.targetC"
+      ],
+      "present": [
+        "c.GetRoom(pawn.Map) != pawn.GetRoom()",
+        "if (!desperate)",
+        "ContainsStaticFire",
+        "ContainsTrap",
+        "pawnDestinationReservationManager.CanReserve"
+      ],
+      "interpretation": "Regular location validation uses the prisoner current room and excludes hazards; it does not track an already-issued delivery destination."
+    },
+    {
+      "type": "RimWorld.RCellFinder",
+      "start": "public static IntVec3 SpotToStandDuringJob(Pawn",
+      "end": "public static bool TryFindMarriageSite",
+      "lineStart": 1083,
+      "lineEnd": 1148,
+      "sha256": "0ae32cc835caee778ed24a4827523a9971829a983647a44586210c7b1dfb6a54",
+      "absent": [
+        "prisoner",
+        "JobDefOf.DeliverFood"
+      ],
+      "present": [
+        "for (int i = 0; i < 30; i++)",
+        "SpotToStandDuringJobInRegion",
+        "IntVec3 randomCell = region.RandomCell",
+        "extraValidator(randomCell)",
+        "return region.RandomCell"
+      ],
+      "interpretation": "Generic staged search has a weaker final random-region fallback, including separately sampled validation and returned cells."
+    },
+    {
+      "type": "RimWorld.Pawn_FoodRestrictionTracker",
+      "start": "public FoodPolicy GetCurrentRespectedRestriction",
+      "end": "public bool BabyFoodAllowed",
+      "lineStart": 59,
+      "lineEnd": 76,
+      "sha256": "5ce5f3d5608aa9af20454ea8c647fb8d75d1a9868a6cb8fefe5d22021d4e1297",
+      "absent": [
+        "Starving",
+        "allowFood",
+        "CanBeBroughtFood"
+      ],
+      "present": [
+        "pawn.Faction != Faction.OfPlayer",
+        "getter.Faction != Faction.OfPlayer",
+        "pawn.InMentalState"
+      ],
+      "interpretation": "Prisoner self-eating policy exception is independent of permission for wardens to supply food."
+    },
+    {
+      "type": "RimWorld.SocialProperness",
+      "start": "public static bool IsSociallyProper(this Thing t, Pawn p, bool",
+      "end": "public static bool BloodfeedingPrisonerInRoom",
+      "lineStart": 12,
+      "lineEnd": 42,
+      "sha256": "401b02b4a57bd41ef690baae82b4859e99771d989aee80f54606148221c866ea",
+      "absent": [
+        "foodRestriction",
+        "CanBeBroughtFood"
+      ],
+      "present": [
+        "socialPropernessMatters",
+        "if (!t.Spawned)",
+        "if (forPrisoner)",
+        "intVec.GetRoom(t.Map) == p.GetRoom()"
+      ],
+      "interpretation": "Social room ownership is independent of the colony food policy and supply-state switch."
+    },
+    {
+      "type": "Verse.AI.Pawn_JobTracker",
+      "start": "private void CleanupCurrentJob",
+      "end": "public JobQueue CaptureAndClearJobQueue",
+      "lineStart": 475,
+      "lineEnd": 524,
+      "sha256": "909e72733ac2220a00411efdc53e34f38ba63a316a8d7778d04d2898779f12c4",
+      "absent": [
+        "DestroyCarriedThing",
+        "ClearAndDestroyContents"
+      ],
+      "present": [
+        "ClearReservationsForJob",
+        "carryThingAfterJobOverride",
+        "TryDropCarriedThing"
+      ],
+      "interpretation": "Job cleanup releases claims and attempts a physical drop unless configured to keep carrying; it does not normally delete held food."
+    },
+    {
+      "type": "Verse.ThingOwner",
+      "start": "public bool TryDrop(Thing thing, IntVec3 dropLoc, Map map, ThingPlaceMode mode, out Thing lastResultingThing",
+      "end": "public bool TryDropAll",
+      "lineStart": 477,
+      "lineEnd": 493,
+      "sha256": "417d88aed5fcf57d4c7c29b849fbb876944e40d04c969be98789a400bc5b3484",
+      "absent": [
+        "Destroy("
+      ],
+      "present": [
+        "if (GenDrop.TryDropSpawn",
+        "Remove(thing)",
+        "return false"
+      ],
+      "interpretation": "Failed physical placement retains the carried stack; container removal occurs only inside the successful drop branch."
+    }
+  ],
+  "packagedXml": [
+    {
+      "file": "Data/Core/Defs/WorkGiverDefs/WorkGivers.xml",
+      "sha256": "fb7066001bb87f1533e0708c915ad5d81c02388e9cb94bd6b6ff5d469e89147c",
+      "xpath": "/Defs/WorkGiverDef[defName=\"FeedPrisoner\"]",
+      "nameAttribute": "",
+      "parentName": "",
+      "fields": [
+        {
+          "xpath": "giverClass",
+          "count": 1,
+          "xml": [
+            "<giverClass>WorkGiver_Warden_Feed</giverClass>"
+          ]
+        },
+        {
+          "xpath": "workType",
+          "count": 1,
+          "xml": [
+            "<workType>Warden</workType>"
+          ]
+        },
+        {
+          "xpath": "priorityInType",
+          "count": 1,
+          "xml": [
+            "<priorityInType>80</priorityInType>"
+          ]
+        },
+        {
+          "xpath": "requiredCapacities",
+          "count": 1,
+          "xml": [
+            "<requiredCapacities><li>Manipulation</li></requiredCapacities>"
+          ]
+        }
+      ],
+      "interpretation": "Bedside feeding is warden work with priority eighty."
+    },
+    {
+      "file": "Data/Core/Defs/WorkGiverDefs/WorkGivers.xml",
+      "sha256": "fb7066001bb87f1533e0708c915ad5d81c02388e9cb94bd6b6ff5d469e89147c",
+      "xpath": "/Defs/WorkGiverDef[defName=\"DeliverFoodToPrisoner\"]",
+      "nameAttribute": "",
+      "parentName": "",
+      "fields": [
+        {
+          "xpath": "giverClass",
+          "count": 1,
+          "xml": [
+            "<giverClass>WorkGiver_Warden_DeliverFood</giverClass>"
+          ]
+        },
+        {
+          "xpath": "workType",
+          "count": 1,
+          "xml": [
+            "<workType>Warden</workType>"
+          ]
+        },
+        {
+          "xpath": "priorityInType",
+          "count": 1,
+          "xml": [
+            "<priorityInType>70</priorityInType>"
+          ]
+        },
+        {
+          "xpath": "requiredCapacities",
+          "count": 1,
+          "xml": [
+            "<requiredCapacities><li>Manipulation</li></requiredCapacities>"
+          ]
+        }
+      ],
+      "interpretation": "Floor delivery is separate warden work with priority seventy."
+    },
+    {
+      "file": "Data/Core/Defs/JobDefs/Jobs_Work.xml",
+      "sha256": "0c2cc583de4ad306681c1dcd65763539461adedf33a5360fe716a36deddef2a1",
+      "xpath": "/Defs/JobDef[defName=\"FeedPatient\"]",
+      "nameAttribute": "",
+      "parentName": "",
+      "fields": [
+        {
+          "xpath": "driverClass",
+          "count": 1,
+          "xml": [
+            "<driverClass>JobDriver_FoodFeedPatient</driverClass>"
+          ]
+        },
+        {
+          "xpath": "reportString",
+          "count": 1,
+          "xml": [
+            "<reportString>feeding TargetA to TargetB.</reportString>"
+          ]
+        },
+        {
+          "xpath": "allowOpportunisticPrefix",
+          "count": 1,
+          "xml": [
+            "<allowOpportunisticPrefix>true</allowOpportunisticPrefix>"
+          ]
+        },
+        {
+          "xpath": "carryThingAfterJob",
+          "count": 0,
+          "xml": []
+        }
+      ],
+      "interpretation": "Bedside job maps to FoodFeedPatient."
+    },
+    {
+      "file": "Data/Core/Defs/JobDefs/Jobs_Work.xml",
+      "sha256": "0c2cc583de4ad306681c1dcd65763539461adedf33a5360fe716a36deddef2a1",
+      "xpath": "/Defs/JobDef[defName=\"DeliverFood\"]",
+      "nameAttribute": "",
+      "parentName": "",
+      "fields": [
+        {
+          "xpath": "driverClass",
+          "count": 1,
+          "xml": [
+            "<driverClass>JobDriver_FoodDeliver</driverClass>"
+          ]
+        },
+        {
+          "xpath": "reportString",
+          "count": 1,
+          "xml": [
+            "<reportString>feeding TargetA to TargetB.</reportString>"
+          ]
+        },
+        {
+          "xpath": "allowOpportunisticPrefix",
+          "count": 1,
+          "xml": [
+            "<allowOpportunisticPrefix>true</allowOpportunisticPrefix>"
+          ]
+        },
+        {
+          "xpath": "carryThingAfterJob",
+          "count": 0,
+          "xml": []
+        }
+      ],
+      "interpretation": "Delivery job maps to FoodDeliver."
+    },
+    {
+      "file": "Data/Core/Defs/JobDefs/Jobs_Misc.xml",
+      "sha256": "537728d9066def61890253439953631e86afb7f2d5f08501a2a70172bcf5d714",
+      "xpath": "/Defs/JobDef[defName=\"Ingest\"]",
+      "nameAttribute": "",
+      "parentName": "",
+      "fields": [
+        {
+          "xpath": "driverClass",
+          "count": 1,
+          "xml": [
+            "<driverClass>JobDriver_Ingest</driverClass>"
+          ]
+        },
+        {
+          "xpath": "reportString",
+          "count": 1,
+          "xml": [
+            "<reportString>consuming TargetA.</reportString>"
+          ]
+        },
+        {
+          "xpath": "casualInterruptible",
+          "count": 0,
+          "xml": []
+        },
+        {
+          "xpath": "carryThingAfterJob",
+          "count": 0,
+          "xml": []
+        }
+      ],
+      "interpretation": "Self-eating remains a separate Ingest job."
+    },
+    {
+      "file": "Data/Core/Defs/Misc/PrisonerInteractionModeDefs/PrisonerInteractionMode.xml",
+      "sha256": "6e9fb8e1b5bc7259d3229025d09a9133e18b29768bafe3ccebd724629069d355",
+      "xpath": "/Defs/PrisonerInteractionModeDef[defName=\"MaintainOnly\"]",
+      "nameAttribute": "",
+      "parentName": "",
+      "fields": [
+        {
+          "xpath": "label",
+          "count": 1,
+          "xml": [
+            "<label>maintain only</label>"
+          ]
+        },
+        {
+          "xpath": "description",
+          "count": 1,
+          "xml": [
+            "<description>Just feed the prisoner and provide for their basic needs, without attempting any other interaction.</description>"
+          ]
+        },
+        {
+          "xpath": "listOrder",
+          "count": 1,
+          "xml": [
+            "<listOrder>0</listOrder>"
+          ]
+        }
+      ],
+      "interpretation": "Maintain-only explicitly includes feeding and basic needs, not no care."
+    },
+    {
+      "file": "Data/Core/Defs/Misc/PrisonerInteractionModeDefs/PrisonerInteractionMode.xml",
+      "sha256": "6e9fb8e1b5bc7259d3229025d09a9133e18b29768bafe3ccebd724629069d355",
+      "xpath": "/Defs/PrisonerInteractionModeDef[defName=\"Release\"]",
+      "nameAttribute": "",
+      "parentName": "",
+      "fields": [
+        {
+          "xpath": "label",
+          "count": 1,
+          "xml": [
+            "<label>release</label>"
+          ]
+        },
+        {
+          "xpath": "description",
+          "count": 1,
+          "xml": [
+            "<description>A warden will release the prisoner.</description>"
+          ]
+        },
+        {
+          "xpath": "listOrder",
+          "count": 1,
+          "xml": [
+            "<listOrder>35</listOrder>"
+          ]
+        }
+      ],
+      "interpretation": "Release is an interaction mode read by supply permission."
+    },
+    {
+      "file": "Data/Core/Defs/Misc/PrisonerInteractionModeDefs/PrisonerInteractionMode.xml",
+      "sha256": "6e9fb8e1b5bc7259d3229025d09a9133e18b29768bafe3ccebd724629069d355",
+      "xpath": "/Defs/PrisonerInteractionModeDef[defName=\"Execution\"]",
+      "nameAttribute": "",
+      "parentName": "",
+      "fields": [
+        {
+          "xpath": "label",
+          "count": 1,
+          "xml": [
+            "<label>execute</label>"
+          ]
+        },
+        {
+          "xpath": "description",
+          "count": 1,
+          "xml": [
+            "<description>A warden will execute the prisoner on the spot by cutting. This can affect the mood of other prisoners and colonists.</description>"
+          ]
+        },
+        {
+          "xpath": "listOrder",
+          "count": 1,
+          "xml": [
+            "<listOrder>40</listOrder>"
+          ]
+        },
+        {
+          "xpath": "mustBeAwake",
+          "count": 1,
+          "xml": [
+            "<mustBeAwake>false</mustBeAwake>"
+          ]
+        }
+      ],
+      "interpretation": "Execution is an interaction mode read by supply permission."
+    },
+    {
+      "file": "Data/Core/Defs/ThinkTreeDefs/Humanlike.xml",
+      "sha256": "047fc3c5bcb60ead007adbcd0090690a25af882adeb11298df8f4b551bbbdd4e",
+      "xpath": "/Defs/ThinkTreeDef[defName=\"Humanlike\"]//li[@Class=\"ThinkNode_ConditionalPrisoner\"]",
+      "nameAttribute": "",
+      "parentName": "",
+      "fields": [
+        {
+          "xpath": "leaveJoinableLordIfIssuesJob",
+          "count": 1,
+          "xml": [
+            "<leaveJoinableLordIfIssuesJob>true</leaveJoinableLordIfIssuesJob>"
+          ]
+        },
+        {
+          "xpath": "subNodes/li",
+          "count": 8,
+          "xml": [
+            "<li Class=\"ThinkNode_ConditionalInNonPlayerHomeMap\"><invert>true</invert><subNodes><!-- Wait instead of escaping if should --><li Class=\"ThinkNode_Tagger\"><tagToGive>Idle</tagToGive><subNodes><li Class=\"JobGiver_PrisonerWaitInsteadOfEscaping\"><maxDanger>Deadly</maxDanger></li></subNodes></li><!-- Escape --><li Class=\"ThinkNode_Tagger\"><tagToGive>Escaping</tagToGive><subNodes><li Class=\"JobGiver_PrisonerEscape\" /></subNodes></li></subNodes></li>",
+            "<li Class=\"ThinkNode_ConditionalReleased\"><subNodes><li Class=\"ThinkNode_Tagger\"><tagToGive>Misc</tagToGive><subNodes><li Class=\"JobGiver_ExitMapBest\"><defaultLocomotion>Walk</defaultLocomotion></li></subNodes></li></subNodes></li>",
+            "<li Class=\"ThinkNode_Tagger\"><tagToGive>RestingForMedicalReasons</tagToGive><subNodes><li Class=\"JobGiver_PatientGoToBed\" /></subNodes></li>",
+            "<li Class=\"ThinkNode_Tagger\"><tagToGive>ChangingApparel</tagToGive><subNodes><li Class=\"JobGiver_PrisonerGetDressed\" /></subNodes></li>",
+            "<li Class=\"ThinkNode_Tagger\"><tagToGive>SatisfyingNeeds</tagToGive><subNodes><li Class=\"ThinkNode_PrioritySorter\"><subNodes><li Class=\"JobGiver_Autofeed\" MayRequire=\"Ludeon.RimWorld.Biotech\" /><li Class=\"JobGiver_GetFood\" /><li Class=\"JobGiver_GetRest\" /><li Class=\"JobGiver_SatisfyChemicalNeed\" /><li Class=\"JobGiver_SatifyChemicalDependency\" MayRequire=\"Ludeon.RimWorld.Biotech\" /><li Class=\"JobGiver_GetHemogen\" MayRequire=\"Ludeon.RimWorld.Biotech\" /><li Class=\"JobGiver_GetDeathrest\" MayRequire=\"Ludeon.RimWorld.Biotech\" /><li Class=\"ThinkNode_Priority_GetJoy\"><subNodes><li Class=\"JobGiver_GetJoy\" /><li Class=\"JobGiver_GetJoyInBed\" /></subNodes></li><li Class=\"JobGiver_Meditate\" /></subNodes></li></subNodes></li>",
+            "<li Class=\"ThinkNode_ConditionalInNonPlayerHomeMap\"><subNodes><!-- No colonist spawned in the map --><li Class=\"ThinkNode_ConditionalAnyUndownedColonistSpawnedNearby\"><invert>true</invert><subNodes><li Class=\"ThinkNode_Tagger\"><tagToGive>Escaping</tagToGive><subNodes><li Class=\"JobGiver_PrisonerEscape\" /></subNodes></li></subNodes></li><!-- Wander --><li Class=\"ThinkNode_Tagger\"><tagToGive>Idle</tagToGive><subNodes><li Class=\"JobGiver_WanderColony\"><maxDanger>Deadly</maxDanger></li></subNodes></li></subNodes></li>",
+            "<li Class=\"ThinkNode_Tagger\"><tagToGive>Idle</tagToGive><subNodes><li Class=\"JobGiver_WanderCurrentRoom\"><maxDanger>Deadly</maxDanger></li></subNodes></li>",
+            "<li Class=\"JobGiver_IdleError\" />"
+          ]
+        }
+      ],
+      "interpretation": "The prisoner branch includes medical rest before needs, a priority-sorted GetFood and current-room wandering."
+    },
+    {
+      "file": "Data/Core/Defs/ThingDefs_Items/Items_Food.xml",
+      "sha256": "9b111fcdfd43fe6bad8e14c0f8cfb6d723365fb82c7732245df82dd2a49fbdc4",
+      "xpath": "/Defs/ThingDef[@Name=\"MealBaseIngredientless\"]",
+      "nameAttribute": "MealBaseIngredientless",
+      "parentName": "",
+      "fields": [
+        {
+          "xpath": "socialPropernessMatters",
+          "count": 1,
+          "xml": [
+            "<socialPropernessMatters>true</socialPropernessMatters>"
+          ]
+        },
+        {
+          "xpath": "ingestible",
+          "count": 1,
+          "xml": [
+            "<ingestible><foodType>Meal</foodType><maxNumToIngestAtOnce>1</maxNumToIngestAtOnce><defaultNumToIngestAtOnce>1</defaultNumToIngestAtOnce><optimalityOffsetHumanlikes>16</optimalityOffsetHumanlikes></ingestible>"
+          ]
+        },
+        {
+          "xpath": "stackLimit",
+          "count": 1,
+          "xml": [
+            "<stackLimit>10</stackLimit>"
+          ]
+        }
+      ],
+      "interpretation": "Meal base participates in social room ownership and caps ordinary ingestion to one meal."
+    },
+    {
+      "file": "Data/Core/Defs/ThingDefs_Items/Items_Resource_RawPlant.xml",
+      "sha256": "dddf120474c2c90fb8e577152d51b83994219c2d7f228196cbe2b3cb3c61785c",
+      "xpath": "/Defs/ThingDef[@Name=\"PlantFoodRawBase\"]",
+      "nameAttribute": "PlantFoodRawBase",
+      "parentName": "OrganicProductBase",
+      "fields": [
+        {
+          "xpath": "socialPropernessMatters",
+          "count": 1,
+          "xml": [
+            "<socialPropernessMatters>true</socialPropernessMatters>"
+          ]
+        },
+        {
+          "xpath": "statBases/Nutrition",
+          "count": 1,
+          "xml": [
+            "<Nutrition>0.05</Nutrition>"
+          ]
+        },
+        {
+          "xpath": "ingestible",
+          "count": 1,
+          "xml": [
+            "<ingestible><preferability>RawBad</preferability><tasteThought>AteRawFood</tasteThought><ingestEffect>EatVegetarian</ingestEffect><ingestSound>RawVegetable_Eat</ingestSound></ingestible>"
+          ]
+        }
+      ],
+      "interpretation": "Raw plant foods also participate in prison-room social ownership."
+    },
+    {
+      "file": "Data/Core/Defs/ThingDefs_Items/Items_Resource_AnimalProduct.xml",
+      "sha256": "271298b153e8a9b86c62f70d0d334d91c8182e4c34525190753a05e5afcff71d",
+      "xpath": "/Defs/ThingDef[defName=\"Milk\"]",
+      "nameAttribute": "",
+      "parentName": "OrganicProductBase",
+      "fields": [
+        {
+          "xpath": "socialPropernessMatters",
+          "count": 1,
+          "xml": [
+            "<socialPropernessMatters>true</socialPropernessMatters>"
+          ]
+        },
+        {
+          "xpath": "statBases/Nutrition",
+          "count": 1,
+          "xml": [
+            "<Nutrition>0.05</Nutrition>"
+          ]
+        },
+        {
+          "xpath": "ingestible",
+          "count": 1,
+          "xml": [
+            "<ingestible><preferability>RawTasty</preferability><foodType>AnimalProduct, Fluid</foodType><babiesCanIngest>true</babiesCanIngest></ingestible>"
+          ]
+        }
+      ],
+      "interpretation": "Milk has social ownership and a smaller per-unit nutrition value than meals."
+    }
+  ],
+  "prisonerHungerThinkTree": {
+    "ancestorsNearestFirst": [
+      {
+        "class": "ThinkNode_PrioritySorter",
+        "tag": null
+      },
+      {
+        "class": "ThinkNode_Tagger",
+        "tag": "SatisfyingNeeds"
+      }
+    ],
+    "siblingsInOrder": [
+      "JobGiver_Autofeed",
+      "JobGiver_GetFood",
+      "JobGiver_GetRest",
+      "JobGiver_SatisfyChemicalNeed",
+      "JobGiver_SatifyChemicalDependency",
+      "JobGiver_GetHemogen",
+      "JobGiver_GetDeathrest",
+      "ThinkNode_Priority_GetJoy",
+      "JobGiver_Meditate"
+    ]
+  },
+  "nativeReference": {
+    "ordinaryDeliveryConsumesFood": false,
+    "bedsideFeedingConsumesFood": true,
+    "foodAlreadySelectedInSameRoomSuppressesDelivery": true,
+    "carriedEdibleNutritionSuppressesDelivery": true,
+    "sharedRoomSufficiencyCountsAllHungryPrisoners": true,
+    "roomNutritionTolerance": 0.5,
+    "hungryThresholdOffset": 0.02,
+    "wardenFeedPriority": 80,
+    "wardenDeliverPriority": 70,
+    "prisonerReservationMaxPawns": 1,
+    "foodReservationMaxPawns": 10,
+    "sourceAllowsWardenInventory": true,
+    "sourceAllowsPackAnimalInventory": false,
+    "sourceAllowsCorpse": false,
+    "sourceMayRefillDispenser": false,
+    "prisonerPolicyRespectedByWardenSupply": true,
+    "prisonerPolicyRespectedBySelfEating": false,
+    "supplyAllowedInExecutionMode": false,
+    "supplyAllowedInReleaseMode": "only when downed",
+    "separateAllowFoodFieldInInspectedTracker": false,
+    "normalStandingSearchStartsWithin": 4,
+    "normalStandingSearchExpandsTo": 15,
+    "standingSearchAttempts": 30,
+    "weakRandomFallbackExists": true,
+    "deliveryLegRechecksPrisonerStatus": true,
+    "deliveryLegRechecksSupplyPermission": true,
+    "deliveryLegDirectlyRechecksRoomOrPolicy": false,
+    "roomSufficiencyDirectlyChecksOrdinaryFoodFreshness": false,
+    "roomSufficiencyDirectlyChecksOrdinaryFoodReachability": false,
+    "bedsideFeedTimeMultiplier": 1.5
+  },
+  "webDesignChoices": [
+    "Finish real supply, same-room self-eating and bedside feeding before tuning hunger or nutrition.",
+    "A separate allowFood switch would be a Web extension: disable new supply and bedside feeding without confiscating food or disabling prisoner self-eating.",
+    "Retain eater-versus-getter policy semantics from the previous milestone.",
+    "Use current room topology and actual physical item placement; a food count or instant hunger refill is not delivery.",
+    "Stricter reevaluation of food policy, cell reachability, room ownership or patient state while walking is a Web consistency improvement beyond the bounded native driver.",
+    "A strict safe landing-cell solver differs from the generic native random fallback.",
+    "Room supply estimation may intentionally check current freshness and prisoner reachability to avoid stale unusable food suppressing every delivery; this improves the coarse native sufficiency estimate.",
+    "Projected claims for other incoming deliveries and integration with shared hauling/cooking reservations should avoid duplicate supply without inventing an atomic native room reservation.",
+    "Keep physically carried rations on interruption, and make source stack, carried split and dropped ration conserve identity/provenance/quantity through saves.",
+    "Original medical feeding, paste dispensers, multi-map rooms and DLC systems remain distinct from a limited Web prisoner supply implementation."
+  ],
+  "limits": [
+    "Derived C# and packaged Core XML are static evidence, not original source or runtime interaction proof.",
+    "No game, browser, preview, GUI input or screenshot was launched.",
+    "Named absence checks are confined to the recorded types/methods; no assertion about every mod or other game version.",
+    "Selected XML fields are not a fully inherited or mod-patched effective Def database.",
+    "The food-policy milestone is reused only with identical assembly identity and matching derived type hashes.",
+    "Numbers are native reference values, not a demand to retune Web balance.",
+    "Full derived C#, assemblies and game assets remain local and unpublished."
+  ],
+  "collectorSha256": "762450079b650384d39b2d585c6e5aba55a76b9e66b9512188a1e77d5be2512c"
+}

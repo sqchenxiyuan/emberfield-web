@@ -22,10 +22,10 @@ export interface PrisonHost {
    * (or preserves a pending weapon drop); leaves faction/state to this module. */
   prisonBeginCapture(patient: Pawn, bed: Bed): boolean;
   prisonCells(prisoner: Pawn): Set<number> | null;
-  /** Plan/recheck an in-cell food route or consume the actual reached stack.
-   * Keep phase prisoner. Never mint food or consume a remote stack. */
+  /** Walk to an in-cell stack, then pick up a real portion and begin dining.
+   * Nutrition is applied only when the separate dining activity finishes. */
   prisonTakeFood(prisoner: Pawn, allowed: Set<number>): boolean;
-  /** Existing physical fetch/carry/feed care task, including healthy prisoners. */
+  /** Deliver meals to autonomous inmates; feed patients who need bed rest. */
   prisonFeed(warden: Pawn, prisoner: Pawn): boolean;
   prisonBecomeColonist(prisoner: Pawn): void;
   prisonExit(prisoner: Pawn): number[] | null;
@@ -47,7 +47,7 @@ function inmate(p: Pawn | undefined): p is Pawn & { prisoner: NonNullable<Pawn['
 }
 function reserved(s: PrisonHost, patient: Pawn, wardenId?: number): boolean {
   return s.pawns.some(q => q.id !== wardenId && !q.dead &&
-    (q.wardenTask?.prisonerId === patient.id || q.patientId === patient.id));
+    (q.wardenTask?.prisonerId === patient.id || q.patientId === patient.id || q.prisonFoodTask?.prisonerId===patient.id));
 }
 function bedAvailable(s: PrisonHost, b: Bed, patient: Pawn, wardenId: number): boolean {
   if (!b.prisoner || (b.owner !== null && b.owner !== patient.id)) return false;
@@ -106,7 +106,7 @@ function cancel(s: PrisonHost, p: Pawn, message: string) {
 }
 function canTalk(p: Pawn, patient: Pawn): boolean {
   const w = healthSummary(p), q = healthSummary(patient);
-  return !patient.downed && patient.carriedBy === null && patient.sleepingSince === null &&
+  return !patient.downed && patient.carriedBy === null && patient.sleepingSince === null && !patient.eating &&
     patient.food >= 12 && patient.rest > 1 && q.consciousness >= .3 &&
     Math.min(w.talking, w.hearing, q.talking, q.hearing) > 0;
 }
@@ -143,7 +143,7 @@ export function tryWarden(s: PrisonHost, p: Pawn): boolean {
       p.food < 30 || p.rest < 20) return false;
   const patients = s.pawns.filter(inmate).filter(q => !q.prisoner.releasing && pawnAllowed(s, p, q) && !reserved(s, q, p.id))
     .sort((a, b) => a.food - b.food || a.id - b.id);
-  // Healthy hungry prisoners need the same physical meal delivery as patients.
+  // Autonomous inmates receive a real dropped meal, then eat on their own.
   for (const q of patients) if (!q.downed && q.food <= 26 && s.prisonFeed(p, q)) return true;
   for (const q of patients) {
     if (q.prisoner.policy === 'release' && !q.downed && q.carriedBy === null &&

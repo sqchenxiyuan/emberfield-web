@@ -1,5 +1,7 @@
 # 余烬边境 · Emberfield
 
+v58接通囚犯实体送餐：狱卒实际取餐并搬进牢房落地，囚犯自行取餐、寻找餐位和咀嚼，完成才消费食物并补充营养；卧床者继续床边喂食。支持房间供餐估算、份额竞争、满地等待、中断与存读。玩法机制优先，数值后调。见[159原版静态机制](docs/research/rimworld/159-prison-food-mechanisms.md)、[160玩法与验证](docs/research/rimworld/160-prison-food-gameplay.md)。本轮仅静态和无界面验证；下文版本段落保留当时边界。
+
 v57接通共享饮食政策与手动食用：按进食者政策选择真实食物，居民自行取餐、医生/狱卒送餐与途中中断共同遵守规则；玩家可临时指定食物覆盖政策，仍须实际前往并吃完。存档保留实际批次和任务，旧营地继续原有自由饮食。玩法机制优先，数值后调。见[157原版静态机制](docs/research/rimworld/157-food-policies-mechanisms.md)、[158玩法与验证](docs/research/rimworld/158-food-policies-gameplay.md)。本轮仅静态和无界面验证。
 
 v56接通服装政策与自动换装：共享筛选 → 从真实储存区取衣 → 步行装备 → 旧衣落地和搬运；手动穿戴有强制保留标记，可逐件或全部解除。政策修改、预约竞争、区域限制、中断和存读共同接入，旧营地保留手动管理。玩法机制优先，数值后调。见[155原版静态机制](docs/research/rimworld/155-apparel-policies-mechanisms.md)、[156玩法与验证](docs/research/rimworld/156-apparel-policies-gameplay.md)。本轮仅静态分析与无界面验证。
